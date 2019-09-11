@@ -1,9 +1,36 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+/** Redux */
+import { connect } from 'react-redux';
+import { loginAction  } from '../../../actions/user-action';
 
 class Login extends Component {
-  render() {
+    
+    username = React.createRef();
+    password = React.createRef();
+
+    login = async (e) => {
+        e.preventDefault();
+
+        const username = this.username.current.value;
+        const password = this.password.current.value;
+
+        console.log(username, password);
+
+        // Crear nuevo producto
+        const user = {
+            username,
+            password
+        }
+
+        // Mandar el producto, crear
+        await this.props.loginAction( user );
+
+        return this.props.history.push('/dashboard'); 
+    }
+  
+    render() {
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -12,7 +39,7 @@ class Login extends Component {
               <CardGroup>
                 <Card className="p-4">
                   <CardBody>
-                    <Form>
+                    <Form onSubmit={this.login}>
                       <h1>Login</h1>
                       <p className="text-muted">Sign In to your account</p>
                       <InputGroup className="mb-3">
@@ -21,7 +48,7 @@ class Login extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" placeholder="Username" autoComplete="username" />
+                        <Input innerRef={this.username} type="text" placeholder="Username" autoComplete="username" />
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
@@ -29,11 +56,11 @@ class Login extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" placeholder="Password" autoComplete="current-password" />
+                        <Input innerRef={this.password} type="password" placeholder="Password" autoComplete="current-password" />
                       </InputGroup>
                       <Row>
                         <Col xs="6">
-                          <Button color="primary" className="px-4">Login</Button>
+                          <Button type="submit" color="primary" className="px-4">Login</Button>
                         </Col>
                         <Col xs="6" className="text-right">
                           <Button color="link" className="px-0">Forgot password?</Button>
@@ -63,4 +90,5 @@ class Login extends Component {
   }
 }
 
-export default Login;
+// export default Login;
+export default connect(null, {loginAction})(Login)
