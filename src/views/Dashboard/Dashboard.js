@@ -21,7 +21,17 @@ import {
   Table,
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
+import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
+
+
+/** Almacenar en el localstorage */
+import store from '../../store';
+
+store.subscribe( () => {
+    localStorage.setItem('user', JSON.stringify( store.getState() ) );
+} );
+
+
 
 const Widget03 = lazy(() => import('../../views/Widgets/Widget03'));
 
