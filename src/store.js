@@ -10,8 +10,16 @@ const middleware = [thunk];
 // const storageState = localStorage.getItem('citas') ? JSON.parse( localStorage.getItem('citas') ) : [];
 const storageState = localStorage.getItem('user') ? JSON.parse( localStorage.getItem('user') ) : [];
 
-const store = createStore(rootReducer, storageState, compose(applyMiddleware(...middleware), 
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-) );
+const devtools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
+
+let store;
+
+if (process.env.NODE_ENV !== 'production') {
+    // hacerAlgoEnDesarrollo();
+    store = createStore(rootReducer, storageState, compose(applyMiddleware(...middleware), devtools));
+  } else {
+    //hacerAlgoEnProd();
+    store = createStore(rootReducer, storageState, compose(applyMiddleware(...middleware)));
+  }
 
 export default store;
