@@ -19,6 +19,7 @@ import {
 import navigation from '../../_nav';
 // routes config
 import routes from '../../routes';
+import Login from '../../views/Pages/Login/Login';
 
 const DefaultAside = React.lazy(() => import('./DefaultAside'));
 const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
@@ -32,6 +33,10 @@ class DefaultLayout extends Component {
     e.preventDefault()
     this.props.history.push('/login')
   }
+
+  estaLogeado = () => {
+    return false;
+}
 
   render() {
     return (
@@ -63,12 +68,14 @@ class DefaultLayout extends Component {
                         path={route.path}
                         exact={route.exact}
                         name={route.name}
-                        render={props => (
-                          <route.component {...props} />
-                        )} />
+                        render={props => 
+                            
+                            ( this.estaLogeado() ) ? <route.component {...props} />  :   <Login {...props} /> 
+                    
+                        } />
                     ) : (null);
                   })}
-                  <Redirect from="/" to="/dashboard" />
+                  <Redirect from="/" to="/login" />
                 </Switch>
               </Suspense>
             </Container>
