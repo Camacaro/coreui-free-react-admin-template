@@ -3,12 +3,24 @@ import { Link } from 'react-router-dom';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 /** Redux */
 import { connect } from 'react-redux';
-import { loginAction  } from '../../../actions/user-action';
+import { loginAction, obtenerUsuario  } from '../../../actions/user-action';
 
 class Login extends Component {
     
     username = React.createRef();
     password = React.createRef();
+    
+    componentDidMount(){
+        
+        this.props.obtenerUsuario();
+
+        const { usuario } = this.props;
+        
+        if( usuario.username ) {
+
+            return this.props.history.push('/dashboard'); 
+        } 
+    }
 
     login = async (e) => {
         e.preventDefault();
@@ -16,16 +28,16 @@ class Login extends Component {
         const username = this.username.current.value;
         const password = this.password.current.value;
 
-        console.log(username, password);
+        // console.log(username, password);
 
         // Crear nuevo producto
-        const user = {
+        const data = {
             username,
             password
         }
 
         // Mandar el producto, crear
-        await this.props.loginAction( user );
+        await this.props.loginAction( data );
 
         return this.props.history.push('/dashboard'); 
     }
@@ -90,5 +102,9 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+    usuario: state.usuario.usuario
+});
+
 // export default Login;
-export default connect(null, {loginAction})(Login)
+export default connect(mapStateToProps, {loginAction, obtenerUsuario})(Login)

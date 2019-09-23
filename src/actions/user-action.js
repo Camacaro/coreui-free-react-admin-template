@@ -1,15 +1,22 @@
-import { LOGIN } from './types';
+import { LOGIN, MOSTRAR_USUARIO } from './types';
 
-export const loginAction = ( user ) => async dispatch => {
+export const loginAction = ( usuario ) => async dispatch => {
     // const respuesta = await axios.get('http://localhost:5000/productos');
 
     await timeout(3000);
 
     dispatch({
         type: LOGIN,
-        payload: user
+        payload: usuario
     });
     
+}
+
+export const obtenerUsuario = () => async dispatch => {
+    
+    dispatch({
+        type: MOSTRAR_USUARIO
+    });
 }
 
 function timeout(ms) {

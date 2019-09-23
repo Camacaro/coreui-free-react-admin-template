@@ -1,8 +1,8 @@
-import { LOGIN } from '../actions/types';
+import { LOGIN, MOSTRAR_USUARIO} from '../actions/types';
 
 /** Cada reducers tiene su propio state */
 const initialState = {
-    user: []
+    usuario: []
 };
 
 export default function(state = initialState, action) {
@@ -10,10 +10,14 @@ export default function(state = initialState, action) {
     switch(action.type){
 
         case LOGIN:
-            console.log(action.payload);
             return{
                 ...state,
-                user : action.payload
+                usuario : action.payload
+            }
+
+        case MOSTRAR_USUARIO:
+            return {
+                ...state
             }
 
         default:

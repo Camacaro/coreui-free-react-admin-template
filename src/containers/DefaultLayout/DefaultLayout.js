@@ -19,11 +19,18 @@ import {
 import navigation from '../../_nav';
 // routes config
 import routes from '../../routes';
-import Login from '../../views/Pages/Login/Login';
+import store from '../../store';
+import { obtenerUsuario } from '../../actions/user-action';
+/** Redux */
+import { connect } from 'react-redux';
 
 const DefaultAside = React.lazy(() => import('./DefaultAside'));
 const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
+
+store.subscribe( () => {
+    localStorage.setItem('state', JSON.stringify( store.getState() ) );
+});
 
 class DefaultLayout extends Component {
 
@@ -34,9 +41,23 @@ class DefaultLayout extends Component {
     this.props.history.push('/login')
   }
 
+  componentDidMount(){
+        
+    this.props.obtenerUsuario();
+  }
+
   estaLogeado = () => {
-    return false;
-}
+    
+    const { usuario } = this.props;
+
+    if( usuario.username ) {
+
+        return true;
+    } else {
+        return false;
+    }
+  }
+
 
   render() {
     return (
@@ -70,7 +91,7 @@ class DefaultLayout extends Component {
                         name={route.name}
                         render={props => 
                             
-                            ( this.estaLogeado() ) ? <route.component {...props} />  :   <Login {...props} /> 
+                            ( this.estaLogeado() ) ? <route.component {...props} />  :  <Redirect from="/" to="/login" />
                     
                         } />
                     ) : (null);
@@ -96,4 +117,21 @@ class DefaultLayout extends Component {
   }
 }
 
-export default DefaultLayout;
+// export default DefaultLayout;
+
+// const mapStateToProps = state => ({
+//     usuario: state.usuario.usuario
+// });
+
+const mapStateToProps = state => {
+
+    //console.log(state);
+    return {
+        usuario: state.usuario.usuario
+    };
+};
+
+
+
+
+export default connect(mapStateToProps, {obtenerUsuario})(DefaultLayout);

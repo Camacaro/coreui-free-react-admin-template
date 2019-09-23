@@ -8,7 +8,7 @@ const middleware = [thunk];
 
 /** Agregar el localStorage, si existe lo convierto en objeto */
 // const storageState = localStorage.getItem('citas') ? JSON.parse( localStorage.getItem('citas') ) : [];
-const storageState = localStorage.getItem('user') ? JSON.parse( localStorage.getItem('user') ) : [];
+const storageState = localStorage.getItem('state') ? JSON.parse( localStorage.getItem('state') ) : [];
 
 const devtools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
 
