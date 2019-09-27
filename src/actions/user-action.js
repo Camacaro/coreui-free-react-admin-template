@@ -1,15 +1,21 @@
 import { LOGIN, MOSTRAR_USUARIO } from './types';
+import environment from '../config';
+import axios from 'axios';
 
 export const loginAction = ( usuario ) => async dispatch => {
-    // const respuesta = await axios.get('http://localhost:5000/productos');
+    
+    const headers = {'Content-Type': 'application/json'};
+    //const respuesta = await axios.post( environment.LOGIN, {usuario});
+    const respuesta = await axios.post( environment.testURL, usuario, headers);
+    
+    // console.log(respuesta.data);
 
-    await timeout(3000);
+    // await timeout(3000);
 
     dispatch({
         type: LOGIN,
-        payload: usuario
+        payload: respuesta.data
     });
-    
 }
 
 export const obtenerUsuario = () => async dispatch => {
