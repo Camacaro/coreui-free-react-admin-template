@@ -26,7 +26,7 @@ class Login extends Component {
 
         const { usuario } = this.props;
         
-        if( usuario.username ) {
+        if( usuario.access_token ) {
 
             return this.props.history.push('/dashboard'); 
         } 
@@ -88,7 +88,7 @@ class Login extends Component {
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
-                            <i className="icon-user"></i>
+                            <i className="fa fa-database"></i>
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input innerRef={this.name} type="text" placeholder="Codigo" autoComplete="codigo" />
@@ -99,7 +99,7 @@ class Login extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input innerRef={this.email} type="text" placeholder="Username" autoComplete="username" />
+                        <Input innerRef={this.email} type="text" placeholder="Email" autoComplete="email" />
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">

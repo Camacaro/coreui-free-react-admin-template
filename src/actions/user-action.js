@@ -5,8 +5,8 @@ import axios from 'axios';
 export const loginAction = ( usuario ) => async dispatch => {
     
     const headers = {'Content-Type': 'application/json'};
-    //const respuesta = await axios.post( environment.LOGIN, {usuario});
-    const respuesta = await axios.post( environment.testURL, usuario, headers);
+    const respuesta = await axios.post( environment.LOGIN, usuario, headers);
+    //const respuesta = await axios.post( environment.testURL, usuario, headers);
     
     // console.log(respuesta.data);
 

@@ -1,11 +1,27 @@
 
-const URL = (process.env.NODE_ENV !== 'production') ? 'http://localhost/sng/backend/public/api/' : 'http://apidoc.sngcr.com/api/'; 
+// const URL = (process.env.NODE_ENV !== 'production') ? 'http://localhost/sng/backend/public/api/' : 'http://apidoc.sngcr.com/api/'; 
+const URL = 'http://apidoc.sngcr.com/api';
+const HEADERS = {'Content-Type': 'application/json'};
 
+export const AUTHORIZATION = (token) => {
+    return {
+        'Authorization': `Bearer ${token}`
+    }
+};
+
+/**
+ * Glosario
+ * /documentoshacienda/{admin_sng}
+ * /verpdf/{admin_sng}/{2}
+ * /verxml/admin_sng/1
+ */
 const environment  = {
     URL,
-    LOGIN: `${URL}'auth/login'`,
-    
-    testURL: 'http://apidoc.sngcr.com/api/auth/login'
+    HEADERS,
+    LOGIN: `${URL}/auth/login`,
+    DOCUMENTOS: `${URL}/documentoshacienda`,
+    VER_PDF: `${URL}/verpdf`,
+    VER_XML: `${URL}/verxml`,
 };
 
 export default environment ;

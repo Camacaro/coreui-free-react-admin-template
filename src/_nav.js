@@ -20,7 +20,7 @@ export default {
     // },
     {
         name: 'Carga de Docs',
-        url: '/theme/colors',
+        url: '/carga-documentos',
         icon: 'icon-docs',
     },
     {
