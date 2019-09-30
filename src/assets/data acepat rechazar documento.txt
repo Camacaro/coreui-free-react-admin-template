@@ -1,0 +1,81 @@
+{
+	"_token": "NMcIUQZ3xLMA8Rbisc40SnhBC0oHADJ8zSWJhxqM",
+	"Mensaje": "2",
+	"CondicionImpuesto": "01",
+	"MontoTotalImpuestoAcreditar": "123",
+	"MontoTotalDeGastoAplicable": "456",
+	"DetalleMensaje": "Detalle Mensaje",
+	"documento": "Tiquete Electronico",
+	"Clave": "50629091900310129518400300001010000006949155236077",
+	"FechaEmisionDoc": "2019-09-29T11:24:39-06:00",
+	"MontoTotalImpuesto": "115.0500",
+	"TotalFactura": "1000.0500",
+	"id_documento": "13949",
+	"nombre_emisor": "ERIAL B.Q., S.A.",
+	"tipo_doc_emisor": "02",
+	"NumeroCedulaEmisor": "3101295184",
+	"telefono_emisor": "22084050",
+	"correo_emisor": "facturacion.envio@officedepot.co.cr",
+	"submit": "",
+	"return": ""
+}
+
+Clave: "123"
+CondicionImpuesto: "02"
+DetalleMensaje: "mesnjae"
+FechaEmisionDoc: "12041996"
+Mensaje: "3"
+MontoTotalImpuesto: "23"
+MontoTotalImpuestoAcreditar: "70"
+TotalFactura: "23"
+correo_emisor: "123"
+documento: "tiquete"
+nombre_emisor: "emisor"
+NumeroCedulaEmisor: "123"
+telefono_emisor: "123"
+tipo_doc_emisor: "02"
+
+Faltan: MontoTotalDeGastoAplicable, id_documento
+
+
+data
+
+{
+	"id_documento": "13949",
+	"documento": "Tiquete Electronico",
+	"nombre_emisor": "ERIAL B.Q., S.A.",
+	"tipo_doc_emisor": "02",
+	"telefono_emisor": "22084050",
+	"correo_emisor": "facturacion.envio@officedepot.co.cr",
+	"NumeroCedulaEmisor": "3101295184",
+	"FechaEmisionDoc": "2019-09-29T11:24:39-06:00",
+	"Clave": "50629091900310129518400300001010000006949155236077",
+	"Mensaje": "2",
+	"DetalleMensaje": "Detalle Mensaje",
+	"MontoTotalImpuesto": "115.0500",
+	"TotalFactura": "1000.0500",
+	"Estatus": "En espera"
+}
+
+public  function insertRow( $data , $id)
+	{
+       $table = with(new static)->table;
+	   $key = with(new static)->primaryKey;
+	    if($id == NULL )
+        {
+			
+            // Insert Here 
+            unset($data[$key]);
+			if(isset($data['createdOn'])) $data['createdOn'] = date("Y-m-d H:i:s");	
+			if(isset($data['updatedOn'])) $data['updatedOn'] = date("Y-m-d H:i:s");	
+			 $id = \DB::table( $table)->insertGetId($data);				
+            
+        } else {
+            // Update here 
+			// update created field if any
+			if(isset($data['createdOn'])) unset($data['createdOn']);	
+			if(isset($data['updatedOn'])) $data['updatedOn'] = date("Y-m-d H:i:s");			
+			 \DB::table($table)->where($key,$id)->update($data);    
+        }    
+        return $id;    
+	}

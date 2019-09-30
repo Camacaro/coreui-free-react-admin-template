@@ -16,10 +16,23 @@ import environment from '../../config';
 
 class CargaDocumentos extends Component {
 
-    emisorRef = React.createRef();
+    // tab 1
     mensajeRef = React.createRef();
     condicionImpuestoRef = React.createRef();
     montoTotalImpuestoAcreditarRef = React.createRef();
+    detalleMensajeRef = React.createRef();
+    // tab 2
+    documentoRef = React.createRef();
+    claveRef  = React.createRef();
+    fechaEmisionDocRef  = React.createRef();
+    montoTotalImpuestoRef  = React.createRef();
+    totalFacturaRef  = React.createRef();
+    // tab 3
+    emisorRef = React.createRef();
+    tipoDocEmisor = React.createRef();
+    numeroCedulaEmisor = React.createRef();
+    telefonoEmisor = React.createRef();
+    correoEmisor = React.createRef();
 
     state = {
         usuario: {},
@@ -105,25 +118,7 @@ class CargaDocumentos extends Component {
             <>
                 <TabPane tabId="1">
                     <Card>
-                        
                         <CardBody>
-                            <Form className="form-horizontal">
-                                
-                                {/* <FormGroup>
-                                    <Label htmlFor="prependedInput">Prepended text</Label>
-                                    
-                                    <div className="controls">
-                                        <InputGroup className="input-prepend">
-                                            <InputGroupAddon addonType="prepend">
-                                            <InputGroupText>@</InputGroupText>
-                                            </InputGroupAddon>
-                                            <Input id="prependedInput" size="16" type="text" />
-                                        </InputGroup>
-                                        <p className="help-block">Here's some help text</p>
-                                    </div>
-
-                                </FormGroup> */}
-
                                 <FormGroup >
                                     <Label htmlFor="Mensaje"> <strong>Mensaje</strong> </Label>
                                     <div className="controls">
@@ -191,22 +186,144 @@ class CargaDocumentos extends Component {
                                             <InputGroupAddon addonType="prepend">
                                             <InputGroupText>*</InputGroupText>
                                             </InputGroupAddon>
-                                            <Input type="textarea" name="textarea-input" id="textarea-input" rows="7" placeholder="Content..." />
+                                            <Input type="textarea" innerRef={this.detalleMensajeRef} name="DetalleMensaje" id="DetalleMensaje" rows="7" placeholder="Content..." />
                                         </InputGroup>
                                     </div>
                                 </FormGroup>
-
-                            </Form>
                         </CardBody>
                     </Card>
                 </TabPane>
 
                 <TabPane tabId="2">
-                    {`2. ${this.lorem()}`}
+                    <Card>
+                        <CardBody>
+                            <FormGroup >
+                                <Label htmlFor="documento"> <strong>Documento</strong> </Label>
+                                <div className="controls">
+                                    <InputGroup className="input-prepend">
+                                        <InputGroupAddon addonType="prepend">
+                                        <InputGroupText></InputGroupText>
+                                        </InputGroupAddon>
+                                        <Input type="text" innerRef={this.documentoRef} name="documento" id="documento" placeholder="Tipo de documento" />
+                                    </InputGroup>
+                                </div>
+                            </FormGroup>  
+                            
+                            <FormGroup >
+                                <Label htmlFor="Clave"> <strong>Clave</strong> </Label>
+                                <div className="controls">
+                                    <InputGroup className="input-prepend">
+                                        <InputGroupAddon addonType="prepend">
+                                        <InputGroupText></InputGroupText>
+                                        </InputGroupAddon>
+                                        <Input type="text" innerRef={this.claveRef} name="Clave" id="Clave" placeholder="Clave" />
+                                    </InputGroup>
+                                </div>
+                            </FormGroup> 
+
+                            <FormGroup >
+                                <Label htmlFor="FechaEmisionDoc"> <strong>Fecha Emision</strong> </Label>
+                                <div className="controls">
+                                    <InputGroup className="input-prepend">
+                                        <InputGroupAddon addonType="prepend">
+                                        <InputGroupText></InputGroupText>
+                                        </InputGroupAddon>
+                                        <Input type="text" innerRef={this.fechaEmisionDocRef} name="FechaEmisionDoc" id="FechaEmisionDoc" placeholder="Fecha Emision" />
+                                    </InputGroup>
+                                </div>
+                            </FormGroup>  
+
+                            <FormGroup >
+                                <Label htmlFor="MontoTotalImpuesto"> <strong> Monto Total Impuesto </strong> </Label>
+                                <div className="controls">
+                                    <InputGroup className="input-prepend">
+                                        <InputGroupAddon addonType="prepend">
+                                        <InputGroupText></InputGroupText>
+                                        </InputGroupAddon>
+                                        <Input type="text" innerRef={this.montoTotalImpuestoRef} name="MontoTotalImpuesto" id="MontoTotalImpuesto" placeholder="Monto Total Impuesto" />
+                                    </InputGroup>
+                                </div>
+                            </FormGroup> 
+
+                            <FormGroup >
+                                <Label htmlFor="TotalFactura"> <strong> Total </strong> </Label>
+                                <div className="controls">
+                                    <InputGroup className="input-prepend">
+                                        <InputGroupAddon addonType="prepend">
+                                        <InputGroupText></InputGroupText>
+                                        </InputGroupAddon>
+                                        <Input type="text" innerRef={this.totalFacturaRef} name="TotalFactura" id="TotalFactura" placeholder="Total" />
+                                    </InputGroup>
+                                </div>
+                            </FormGroup>  
+                        </CardBody>
+                    </Card>
                 </TabPane>
 
                 <TabPane tabId="3">
-                    {`3. ${this.lorem()}`}
+                    <Card>
+                        <CardBody>
+                            <FormGroup >
+                                <Label htmlFor="nombre_emisor"> <strong>Nombre Emisor</strong> </Label>
+                                <div className="controls">
+                                    <InputGroup className="input-prepend">
+                                        <InputGroupAddon addonType="prepend">
+                                        <InputGroupText></InputGroupText>
+                                        </InputGroupAddon>
+                                        <Input type="text" innerRef={this.emisorRef} name="nombre_emisor" id="nombre_emisor" placeholder="Emisor" />
+                                    </InputGroup>
+                                </div>
+                            </FormGroup>  
+                            
+                            <FormGroup >
+                                <Label htmlFor="tipo_doc_emisor"> <strong>Tipo Doc Emisor</strong> </Label>
+                                <div className="controls">
+                                    <InputGroup className="input-prepend">
+                                        <InputGroupAddon addonType="prepend">
+                                        <InputGroupText></InputGroupText>
+                                        </InputGroupAddon>
+                                        <Input type="text" innerRef={this.tipoDocEmisor} name="tipo_doc_emisor" id="tipo_doc_emisor" placeholder="Tipo Doc Emisor" />
+                                    </InputGroup>
+                                </div>
+                            </FormGroup> 
+
+                            <FormGroup >
+                                <Label htmlFor="NumeroCedulaEmisor"> <strong>Numero Cedula</strong> </Label>
+                                <div className="controls">
+                                    <InputGroup className="input-prepend">
+                                        <InputGroupAddon addonType="prepend">
+                                        <InputGroupText></InputGroupText>
+                                        </InputGroupAddon>
+                                        <Input type="text" innerRef={this.numeroCedulaEmisor} name="NumeroCedulaEmisor" id="NumeroCedulaEmisor" placeholder="Numero Cedula" />
+                                    </InputGroup>
+                                </div>
+                            </FormGroup>  
+
+                            <FormGroup >
+                                <Label htmlFor="telefono_emisor"> <strong> Telefono Emisor </strong> </Label>
+                                <div className="controls">
+                                    <InputGroup className="input-prepend">
+                                        <InputGroupAddon addonType="prepend">
+                                        <InputGroupText></InputGroupText>
+                                        </InputGroupAddon>
+                                        <Input type="text" innerRef={this.telefonoEmisor} name="telefono_emisor" id="telefono_emisor" placeholder="Telefono Emisor" />
+                                    </InputGroup>
+                                </div>
+                            </FormGroup> 
+
+                            <FormGroup >
+                                <Label htmlFor="correo_emisor"> <strong> Correo Emisor </strong> </Label>
+                                <div className="controls">
+                                    <InputGroup className="input-prepend">
+                                        <InputGroupAddon addonType="prepend">
+                                        <InputGroupText></InputGroupText>
+                                        </InputGroupAddon>
+                                        <Input type="text" innerRef={this.correoEmisor} name="correo_emisor" id="correo_emisor" placeholder="Correo Emisor" />
+                                    </InputGroup>
+                                </div>
+                            </FormGroup>  
+                        </CardBody>
+                    </Card>
                 </TabPane>
             </>
         );
@@ -215,6 +332,41 @@ class CargaDocumentos extends Component {
     guardarDocumento = (e) => {
         e.preventDefault();
 
+        const Mensaje = this.mensajeRef.current.value;
+        const CondicionImpuesto = this.condicionImpuestoRef.current.value;
+        const MontoTotalImpuestoAcreditar = this.montoTotalImpuestoAcreditarRef.current.value;
+        const DetalleMensaje = this.detalleMensajeRef.current.value;
+
+        const documento = this.documentoRef.current.value;
+        const Clave = this.claveRef .current.value;
+        const FechaEmisionDoc = this.fechaEmisionDocRef.current.value;
+        const MontoTotalImpuesto = this.montoTotalImpuestoRef .current.value;
+        const TotalFactura = this.totalFacturaRef .current.value;
+
+        const nombre_emisor = this.emisorRef.current.value;
+        const tipo_doc_emisor = this.tipoDocEmisor.current.value;
+        const NumeroCedulaEmisor = this.numeroCedulaEmisor.current.value;
+        const telefono_emisor = this.telefonoEmisor.current.value;
+        const correo_emisor = this.correoEmisor.current.value;
+
+        const documentoData = {
+            Mensaje,
+            CondicionImpuesto,
+            MontoTotalImpuestoAcreditar,
+            DetalleMensaje,
+            documento,
+            Clave,
+            FechaEmisionDoc,
+            MontoTotalImpuesto,
+            TotalFactura,
+            nombre_emisor,
+            tipo_doc_emisor,
+            NumeroCedulaEmisor,
+            telefono_emisor,
+            correo_emisor
+        };
+
+        console.log(documentoData);
     };
 
     render() {
@@ -274,7 +426,7 @@ class CargaDocumentos extends Component {
                 </Row>
 
                 <Modal isOpen={this.state.modal} toggle={this.aceptarRechazar} className={'modal-lg'}>
-                <Form onSubmit={this.login}>
+                <Form onSubmit={this.guardarDocumento}>
                     <ModalHeader toggle={this.aceptarRechazar}> Aceptar / Rechazar Documento </ModalHeader>
                     <ModalBody>
                         
