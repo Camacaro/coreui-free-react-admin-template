@@ -93,7 +93,7 @@ class DocumentosAceptados extends Component {
                         style={aStyle}
                         target="_blank" 
                         href={`${environment.VER_XML}/${this.state.usuario.db}/${row.id_documento}`}
-                        title="Ver PDF">
+                        title="Ver XML">
                         Ver XML 
                     </a>
                 </Button>
@@ -102,8 +102,8 @@ class DocumentosAceptados extends Component {
                     <a 
                         style={aStyle}
                         target="_blank" 
-                        href={`${environment.VER_XML}/${this.state.usuario.db}/${row.id_documento}`}
-                        title="Ver PDF">
+                        href={`${environment.VER_XML}/${this.state.usuario.db}/${row.id_documento}?r=true`}
+                        title="Ver Respuesta XML ">
                         Ver Respuesta XML 
                     </a>
                 </Button>
@@ -132,7 +132,7 @@ class DocumentosAceptados extends Component {
 
         } else {
 
-            const documentos = [...this.props.documentos];
+            const documentos = [...this.props.documentosAceptados];
     
             const dataExport = documentos.filter( documento => {
                 
