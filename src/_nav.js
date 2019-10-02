@@ -30,7 +30,7 @@ export default {
     },
     {
         name: 'Docs Rechazados',
-        url: '/theme/typography',
+        url: '/documentos-rechazados',
         icon: 'icon-close',
     },
     {
