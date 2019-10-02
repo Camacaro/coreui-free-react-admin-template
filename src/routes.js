@@ -1,5 +1,7 @@
 import React from 'react';
-import CargaDocumentos from './views/CargaDocumentos/CargaDocumentos';
+
+const CargaDocumentos = React.lazy(() => import('./views/CargaDocumentos/CargaDocumentos'));
+const DocumentosAceptados = React.lazy(() => import('./views/DocumentosAceptados/DocumentosAceptados'));
 
 const Breadcrumbs = React.lazy(() => import('./views/Base/Breadcrumbs'));
 const Cards = React.lazy(() => import('./views/Base/Cards'));
@@ -83,6 +85,7 @@ const routes = [
 
 
   { path: '/carga-documentos', exact: true, name: 'Carga de Documentos', component: CargaDocumentos }, 
+  { path: '/documentos-aceptados', exact: true, name: 'Documentos Aceptados', component: DocumentosAceptados }, 
 ];
 
 export default routes;

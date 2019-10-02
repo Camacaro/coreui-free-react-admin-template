@@ -17,6 +17,7 @@ export const AUTHORIZATION = (token) => {
  * documentoshacienda/porrevisar/{db}/{id}
  * documentoshacienda/cargardocumento/{db}
  * documentoshacienda/fragmentarxml/{db}
+ * documentoshacienda/aceptados/{db}
  */
 const environment  = {
     URL,
@@ -28,6 +29,8 @@ const environment  = {
     DOCUMENTOS_A_REVISION: `${URL}/documentoshacienda/porrevisar`,
     CARGAR_DOCUMENTO: `${URL}/documentoshacienda/cargardocumento`,
     FRAGMENTAR_DOCUMENTO: `${URL}/documentoshacienda/fragmentarxml`,
+
+    DOCUMENTOS_ACEPTADOS: `${URL}/documentoshacienda/aceptados`,
 };
 
 export default environment ;

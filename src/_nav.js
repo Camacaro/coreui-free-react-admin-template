@@ -25,7 +25,7 @@ export default {
     },
     {
         name: 'Docs Aceptados',
-        url: '/theme/typography',
+        url: '/documentos-aceptados',
         icon: 'icon-check',
     },
     {
