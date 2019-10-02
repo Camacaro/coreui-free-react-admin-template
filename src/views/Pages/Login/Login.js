@@ -1,9 +1,24 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row, Alert } from 'reactstrap';
+import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row, Alert, Modal, ModalBody, } from 'reactstrap';
 /** Redux */
 import { connect } from 'react-redux';
 import { loginAction, obtenerUsuario  } from '../../../actions/user-action';
+
+const LOAD = <div className="sk-circle">
+<div className="sk-circle1 sk-child"></div>
+<div className="sk-circle2 sk-child"></div>
+<div className="sk-circle3 sk-child"></div>
+<div className="sk-circle4 sk-child"></div>
+<div className="sk-circle5 sk-child"></div>
+<div className="sk-circle6 sk-child"></div>
+<div className="sk-circle7 sk-child"></div>
+<div className="sk-circle8 sk-child"></div>
+<div className="sk-circle9 sk-child"></div>
+<div className="sk-circle10 sk-child"></div>
+<div className="sk-circle11 sk-child"></div>
+<div className="sk-circle12 sk-child"></div>
+</div>;
 
 
 class Login extends Component {
@@ -17,7 +32,8 @@ class Login extends Component {
      * state local en este componente
      */
     state = {
-        error: false
+        error: false,
+        cargar: false,
     }
     
     componentDidMount(){
@@ -60,12 +76,16 @@ class Login extends Component {
                 error:false
             });
 
+            this.setState({cargar: true});
+
             await this.props.loginAction( data );
 
             const { usuario } = this.props;
 
             if( usuario ) {
-                // console.log(usuario);
+                
+                this.setState({cargar: false});
+
                 return this.props.history.push('/dashboard'); 
             }
         }
@@ -77,6 +97,15 @@ class Login extends Component {
     return (
       <div className="app flex-row align-items-center">
         <Container>
+
+        <Modal isOpen={this.state.cargar} className="modal-load">
+            <ModalBody>
+
+                { LOAD }
+            
+            </ModalBody>
+        </Modal>
+
           <Row className="justify-content-center">
             <Col md="8">
               <CardGroup>

@@ -3,16 +3,33 @@ import { Card, CardBody, CardHeader, Col, Row, Button,
     Modal, ModalBody, ModalFooter, ModalHeader,
     Nav, NavItem, NavLink,  TabContent, TabPane,
     Form, FormGroup,  Input, InputGroup, InputGroupAddon,  Label, InputGroupText,
+    Alert,
  } from 'reactstrap';
 // import { MDBDataTable, MDBBtn, MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import Swal from 'sweetalert2'
 
 /** Redux */
 import { connect } from 'react-redux';
-import { getDocumentos, mostrarDocumentos, verPDFAction } from '../../actions/cargaDocumentos-action';
+import { getDocumentos, mostrarDocumentos, putDocumento, mandarARevision } from '../../actions/cargaDocumentos-action';
 import { obtenerUsuario } from '../../actions/user-action';
 import environment from '../../config';
+
+const LOAD = <div className="sk-circle">
+<div className="sk-circle1 sk-child"></div>
+<div className="sk-circle2 sk-child"></div>
+<div className="sk-circle3 sk-child"></div>
+<div className="sk-circle4 sk-child"></div>
+<div className="sk-circle5 sk-child"></div>
+<div className="sk-circle6 sk-child"></div>
+<div className="sk-circle7 sk-child"></div>
+<div className="sk-circle8 sk-child"></div>
+<div className="sk-circle9 sk-child"></div>
+<div className="sk-circle10 sk-child"></div>
+<div className="sk-circle11 sk-child"></div>
+<div className="sk-circle12 sk-child"></div>
+</div>;
 
 class CargaDocumentos extends Component {
 
@@ -20,8 +37,10 @@ class CargaDocumentos extends Component {
     mensajeRef = React.createRef();
     condicionImpuestoRef = React.createRef();
     montoTotalImpuestoAcreditarRef = React.createRef();
+    montoTotalDeGastoAplicableRef = React.createRef();
     detalleMensajeRef = React.createRef();
     // tab 2
+    idDocumentoRef = React.createRef();
     documentoRef = React.createRef();
     claveRef  = React.createRef();
     fechaEmisionDocRef  = React.createRef();
@@ -38,9 +57,12 @@ class CargaDocumentos extends Component {
         usuario: {},
         modal: false,
         activeTab: new Array(4).fill('1'),
+        documento: '',
+        error: false,
+        cargar: false,
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         
         this.props.obtenerUsuario();
 
@@ -50,15 +72,54 @@ class CargaDocumentos extends Component {
             usuario
         });
 
-        this.props.getDocumentos( usuario.db, usuario.access_token );
+        this.setState({cargar: true});
 
-        this.props.mostrarDocumentos();
+        await this.props.getDocumentos( usuario.db, usuario.access_token );
+
+        await this.props.mostrarDocumentos();
+
+        this.setState({cargar: false});
     }
 
-    aceptarRechazar = (id) => { this.setState({modal: !this.state.modal}) };
+    aceptarRechazar = (id) => { 
+
+        const documento = this.props.documentos.filter( documento => {
+            return documento.id_documento == id;
+        })[0];
+
+        this.setState({modal: !this.state.modal, documento: documento});
+    };
+
+    cerrarModalAceptarRechazar = () => {
+        this.setState({modal: !this.state.modal});
+    }
 
 
-    enviarRevision = (id) => { console.log('enviarRevision', id); };
+    enviarRevision = async (id) => { 
+
+        this.setState({cargar: true});
+
+        const respuesta = await this.props.mandarARevision(id, this.state.usuario.db, this.state.usuario.access_token);
+
+        if ( respuesta.ok ) {
+
+            this.props.documentos.map( documento => {
+                
+                if ( documento.id_documento == id ) {
+                    
+                    documento.Estatus = respuesta.estatus;
+                }
+            });
+
+            this.setState({cargar: false});
+
+            Swal.fire(
+                'Documentos Hacienda!',
+                respuesta.message,
+                'success'
+            );
+        }
+    };
 
     buttonGroup = (cell, row) => {
 
@@ -107,10 +168,6 @@ class CargaDocumentos extends Component {
         this.setState({
           activeTab: newArray,
         });
-    }
-
-    lorem() {
-        return 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.'
     }
 
     tabPane() {
@@ -168,13 +225,13 @@ class CargaDocumentos extends Component {
                                 </FormGroup>
 
                                 <FormGroup >
-                                    <Label htmlFor="MontoTotalImpuestoAcreditar"> <strong>Monto Total De Gasto Aplicable</strong> </Label>
+                                    <Label htmlFor="MontoTotalDeGastoAplicable"> <strong>Monto Total De Gasto Aplicable</strong> </Label>
                                     <div className="controls">
                                         <InputGroup className="input-prepend">
                                             <InputGroupAddon addonType="prepend">
                                             <InputGroupText></InputGroupText>
                                             </InputGroupAddon>
-                                            <Input type="text" innerRef={this.montoTotalImpuestoAcreditarRef} name="MontoTotalImpuestoAcreditar" id="MontoTotalImpuestoAcreditar" placeholder="0.00000" />
+                                            <Input type="text" innerRef={this.montoTotalDeGastoAplicableRef} name="MontoTotalDeGastoAplicable" id="MontoTotalDeGastoAplicable" placeholder="0.00000" />
                                         </InputGroup>
                                     </div>
                                 </FormGroup>
@@ -197,6 +254,7 @@ class CargaDocumentos extends Component {
                 <TabPane tabId="2">
                     <Card>
                         <CardBody>
+                        <Input type="hidden" innerRef={this.idDocumentoRef} defaultValue={this.state.documento.id_documento}  name="id_documento" id="id_documento" />
                             <FormGroup >
                                 <Label htmlFor="documento"> <strong>Documento</strong> </Label>
                                 <div className="controls">
@@ -204,7 +262,7 @@ class CargaDocumentos extends Component {
                                         <InputGroupAddon addonType="prepend">
                                         <InputGroupText></InputGroupText>
                                         </InputGroupAddon>
-                                        <Input type="text" innerRef={this.documentoRef} name="documento" id="documento" placeholder="Tipo de documento" />
+                                        <Input type="text" innerRef={this.documentoRef} defaultValue={this.state.documento.documento}  name="documento" id="documento" placeholder="Tipo de documento" />
                                     </InputGroup>
                                 </div>
                             </FormGroup>  
@@ -216,7 +274,7 @@ class CargaDocumentos extends Component {
                                         <InputGroupAddon addonType="prepend">
                                         <InputGroupText></InputGroupText>
                                         </InputGroupAddon>
-                                        <Input type="text" innerRef={this.claveRef} name="Clave" id="Clave" placeholder="Clave" />
+                                        <Input type="text" innerRef={this.claveRef} defaultValue={this.state.documento.Clave} name="Clave" id="Clave" placeholder="Clave" />
                                     </InputGroup>
                                 </div>
                             </FormGroup> 
@@ -228,7 +286,7 @@ class CargaDocumentos extends Component {
                                         <InputGroupAddon addonType="prepend">
                                         <InputGroupText></InputGroupText>
                                         </InputGroupAddon>
-                                        <Input type="text" innerRef={this.fechaEmisionDocRef} name="FechaEmisionDoc" id="FechaEmisionDoc" placeholder="Fecha Emision" />
+                                        <Input type="text" innerRef={this.fechaEmisionDocRef} defaultValue={this.state.documento.FechaEmisionDoc} name="FechaEmisionDoc" id="FechaEmisionDoc" placeholder="Fecha Emision" />
                                     </InputGroup>
                                 </div>
                             </FormGroup>  
@@ -240,7 +298,7 @@ class CargaDocumentos extends Component {
                                         <InputGroupAddon addonType="prepend">
                                         <InputGroupText></InputGroupText>
                                         </InputGroupAddon>
-                                        <Input type="text" innerRef={this.montoTotalImpuestoRef} name="MontoTotalImpuesto" id="MontoTotalImpuesto" placeholder="Monto Total Impuesto" />
+                                        <Input type="text" innerRef={this.montoTotalImpuestoRef}  name="MontoTotalImpuesto" id="MontoTotalImpuesto" placeholder="0.0000" />
                                     </InputGroup>
                                 </div>
                             </FormGroup> 
@@ -252,7 +310,7 @@ class CargaDocumentos extends Component {
                                         <InputGroupAddon addonType="prepend">
                                         <InputGroupText></InputGroupText>
                                         </InputGroupAddon>
-                                        <Input type="text" innerRef={this.totalFacturaRef} name="TotalFactura" id="TotalFactura" placeholder="Total" />
+                                        <Input type="text" innerRef={this.totalFacturaRef} defaultValue={this.state.documento.TotalFactura} name="TotalFactura" id="TotalFactura" placeholder="Total" />
                                     </InputGroup>
                                 </div>
                             </FormGroup>  
@@ -270,7 +328,7 @@ class CargaDocumentos extends Component {
                                         <InputGroupAddon addonType="prepend">
                                         <InputGroupText></InputGroupText>
                                         </InputGroupAddon>
-                                        <Input type="text" innerRef={this.emisorRef} name="nombre_emisor" id="nombre_emisor" placeholder="Emisor" />
+                                        <Input type="text" innerRef={this.emisorRef} defaultValue={this.state.documento.nombre_emisor}  name="nombre_emisor" id="nombre_emisor" placeholder="Emisor" />
                                     </InputGroup>
                                 </div>
                             </FormGroup>  
@@ -282,7 +340,7 @@ class CargaDocumentos extends Component {
                                         <InputGroupAddon addonType="prepend">
                                         <InputGroupText></InputGroupText>
                                         </InputGroupAddon>
-                                        <Input type="text" innerRef={this.tipoDocEmisor} name="tipo_doc_emisor" id="tipo_doc_emisor" placeholder="Tipo Doc Emisor" />
+                                        <Input type="text" innerRef={this.tipoDocEmisor} defaultValue={this.state.documento.tipo_doc_emisor} name="tipo_doc_emisor" id="tipo_doc_emisor" placeholder="Tipo Doc Emisor" />
                                     </InputGroup>
                                 </div>
                             </FormGroup> 
@@ -294,7 +352,7 @@ class CargaDocumentos extends Component {
                                         <InputGroupAddon addonType="prepend">
                                         <InputGroupText></InputGroupText>
                                         </InputGroupAddon>
-                                        <Input type="text" innerRef={this.numeroCedulaEmisor} name="NumeroCedulaEmisor" id="NumeroCedulaEmisor" placeholder="Numero Cedula" />
+                                        <Input type="text" innerRef={this.numeroCedulaEmisor} defaultValue={this.state.documento.NumeroCedulaEmisor} name="NumeroCedulaEmisor" id="NumeroCedulaEmisor" placeholder="Numero Cedula" />
                                     </InputGroup>
                                 </div>
                             </FormGroup>  
@@ -306,7 +364,7 @@ class CargaDocumentos extends Component {
                                         <InputGroupAddon addonType="prepend">
                                         <InputGroupText></InputGroupText>
                                         </InputGroupAddon>
-                                        <Input type="text" innerRef={this.telefonoEmisor} name="telefono_emisor" id="telefono_emisor" placeholder="Telefono Emisor" />
+                                        <Input type="text" innerRef={this.telefonoEmisor} defaultValue={this.state.documento.telefono_emisor} name="telefono_emisor" id="telefono_emisor" placeholder="Telefono Emisor" />
                                     </InputGroup>
                                 </div>
                             </FormGroup> 
@@ -318,7 +376,7 @@ class CargaDocumentos extends Component {
                                         <InputGroupAddon addonType="prepend">
                                         <InputGroupText></InputGroupText>
                                         </InputGroupAddon>
-                                        <Input type="text" innerRef={this.correoEmisor} name="correo_emisor" id="correo_emisor" placeholder="Correo Emisor" />
+                                        <Input type="text" innerRef={this.correoEmisor} defaultValue={this.state.documento.correo_emisor} name="correo_emisor" id="correo_emisor" placeholder="Correo Emisor" />
                                     </InputGroup>
                                 </div>
                             </FormGroup>  
@@ -329,14 +387,17 @@ class CargaDocumentos extends Component {
         );
     }
 
-    guardarDocumento = (e) => {
+    guardarDocumento = async e => {
         e.preventDefault();
+        this.setState({error: false});
 
         const Mensaje = this.mensajeRef.current.value;
         const CondicionImpuesto = this.condicionImpuestoRef.current.value;
         const MontoTotalImpuestoAcreditar = this.montoTotalImpuestoAcreditarRef.current.value;
+        const MontoTotalDeGastoAplicableRef = this.montoTotalDeGastoAplicableRef.current.value;
         const DetalleMensaje = this.detalleMensajeRef.current.value;
 
+        const id_documento = this.idDocumentoRef.current.value;
         const documento = this.documentoRef.current.value;
         const Clave = this.claveRef .current.value;
         const FechaEmisionDoc = this.fechaEmisionDocRef.current.value;
@@ -349,24 +410,58 @@ class CargaDocumentos extends Component {
         const telefono_emisor = this.telefonoEmisor.current.value;
         const correo_emisor = this.correoEmisor.current.value;
 
-        const documentoData = {
-            Mensaje,
-            CondicionImpuesto,
-            MontoTotalImpuestoAcreditar,
-            DetalleMensaje,
-            documento,
-            Clave,
-            FechaEmisionDoc,
-            MontoTotalImpuesto,
-            TotalFactura,
-            nombre_emisor,
-            tipo_doc_emisor,
-            NumeroCedulaEmisor,
-            telefono_emisor,
-            correo_emisor
-        };
+        if( Mensaje == '' || DetalleMensaje == '' ) {
+            
+            this.setState({error: true});
 
-        console.log(documentoData);
+        }else{
+
+            this.setState({cargar: true});
+            
+            const documentoData = {
+                Mensaje,
+                CondicionImpuesto,
+                MontoTotalImpuestoAcreditar,
+                MontoTotalDeGastoAplicableRef,
+                DetalleMensaje,
+                id_documento,
+                documento,
+                Clave,
+                FechaEmisionDoc,
+                MontoTotalImpuesto,
+                TotalFactura,
+                nombre_emisor,
+                tipo_doc_emisor,
+                NumeroCedulaEmisor,
+                telefono_emisor,
+                correo_emisor
+            };            
+
+            const respuesta = await this.props.putDocumento(documentoData, this.state.usuario.db, this.state.usuario.access_token);
+
+            if( respuesta.ok ){
+
+                this.props.documentos.map( documento => {
+                    
+                    if ( documento.id_documento == id_documento ) {
+                        
+                        documento.consecutivo        = respuesta.consecutivo;
+                        documento.DetalleMensaje     = DetalleMensaje;
+                        documento.MontoTotalImpuesto = MontoTotalImpuesto;
+                    }
+                });
+    
+                this.setState({cargar: false});
+    
+                this.cerrarModalAceptarRechazar();
+    
+                Swal.fire(
+                    'Documentos Hacienda!',
+                    respuesta.message,
+                    'success'
+                );
+            }
+        }        
     };
 
     render() {
@@ -395,6 +490,16 @@ class CargaDocumentos extends Component {
 
         return (
             <div className="animated fadeIn">
+
+
+                <Modal isOpen={this.state.cargar} className="modal-load">
+                    <ModalBody>
+
+                        { LOAD }
+                    
+                    </ModalBody>
+                </Modal>
+
                 <Row> 
                     <Col xs="12" lg="12">
                         <Card>
@@ -409,7 +514,7 @@ class CargaDocumentos extends Component {
                                     <TableHeaderColumn dataField='nombre_emisor'        width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Emisor</TableHeaderColumn>
                                     <TableHeaderColumn dataField='FechaEmisionDoc'      width='300px' filter={ { type: 'DateFilter' } } dataFormat={ this.dateFormatter } >Fecha Doc</TableHeaderColumn>
                                     <TableHeaderColumn dataField='MontoTotalImpuesto'   width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Monto Impuesto</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='consecutivo'          width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Consecutivo</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='consecutivo'          width='200px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Consecutivo</TableHeaderColumn>
                                     <TableHeaderColumn dataField='TotalFactura'         width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Total Doc</TableHeaderColumn>
                                     <TableHeaderColumn dataField='Estatus'              width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Estatus Hacienda</TableHeaderColumn>
                                     <TableHeaderColumn dataField='DetalleMensaje'       width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Detalle Mensaje</TableHeaderColumn>
@@ -425,9 +530,9 @@ class CargaDocumentos extends Component {
                     </Col>
                 </Row>
 
-                <Modal isOpen={this.state.modal} toggle={this.aceptarRechazar} className={'modal-lg'}>
+                <Modal isOpen={this.state.modal} toggle={this.cerrarModalAceptarRechazar} className={'modal-lg'}>
                 <Form onSubmit={this.guardarDocumento}>
-                    <ModalHeader toggle={this.aceptarRechazar}> Aceptar / Rechazar Documento </ModalHeader>
+                    <ModalHeader toggle={this.cerrarModalAceptarRechazar}> Aceptar / Rechazar Documento </ModalHeader>
                     <ModalBody>
                         
                         <Nav tabs>
@@ -454,13 +559,16 @@ class CargaDocumentos extends Component {
 
                         <TabContent activeTab={this.state.activeTab[0]}>
                             {this.tabPane()}
+
+                            { this.state.error ? <Alert  color="danger"> Debe llenar los datos con * </Alert> : '' }
                         </TabContent>
+                        
                         
                     </ModalBody>
 
                   <ModalFooter>
                     <Button type="submit" color="primary" >Guardar</Button>{' '}
-                    <Button color="secondary" onClick={this.aceptarRechazar}>Cancel</Button>
+                    <Button color="secondary" onClick={this.cerrarModalAceptarRechazar}>Cancel</Button>
                   </ModalFooter>
                 </Form>
                 </Modal>
@@ -478,4 +586,4 @@ const mapStateToProps = state => {
 };
 
 //export default CargaDocumentos;
-export default connect(mapStateToProps, {getDocumentos, obtenerUsuario, mostrarDocumentos, verPDFAction})(CargaDocumentos);
+export default connect(mapStateToProps, {getDocumentos, obtenerUsuario, mostrarDocumentos, putDocumento, mandarARevision})(CargaDocumentos);

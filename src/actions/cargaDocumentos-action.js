@@ -1,4 +1,4 @@
-import { OBTENER_DOCUMENTOS, MOSTRAR_DOCUMENTOS, VER_PDF } from './types';
+import { OBTENER_DOCUMENTOS, MOSTRAR_DOCUMENTOS, GUARDAR_DOCUMENTO, VER_PDF } from './types';
 import environment, { AUTHORIZATION } from '../config';
 import axios from 'axios';
 
@@ -22,6 +22,29 @@ export const mostrarDocumentos = () => async dispatch => {
     dispatch({
         type: MOSTRAR_DOCUMENTOS
     });
+}
+
+export const putDocumento = (documento, db, token) => async dispatch => {
+
+
+    const respuesta = await axios.put(`${environment.DOCUMENTOS}/${db}`, documento, { headers: { Authorization:`Bearer ${token}` } });
+
+    if(respuesta.status === 200){
+        return respuesta.data
+    } else {
+        return respuesta.data.ok = false;
+    }
+}
+
+export const mandarARevision = (id, db, token) => async dispatch => {
+
+    const respuesta = await axios.put(`${environment.DOCUMENTOS_A_REVISION}/${db}/${id}`, null, { headers: { Authorization:`Bearer ${token}` } });
+
+    if(respuesta.status === 200){
+        return respuesta.data
+    } else {
+        return respuesta.data.ok = false;
+    }
 }
 
 export const verPDFAction = ( db, id, token ) => async () => {

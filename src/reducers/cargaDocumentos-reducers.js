@@ -1,4 +1,4 @@
-import { OBTENER_DOCUMENTOS } from '../actions/types';
+import { OBTENER_DOCUMENTOS, MOSTRAR_DOCUMENTOS } from '../actions/types';
 
 /** Cada reducers tiene su propio state */
 const initialState = {
@@ -14,6 +14,9 @@ export default function(state = initialState, action) {
                 ...state,
                 documentos : action.payload
             }
+
+        case MOSTRAR_DOCUMENTOS:
+            return state;
 
         default:
             return state;

@@ -20,22 +20,22 @@
 	"return": ""
 }
 
-Clave: "123"
-CondicionImpuesto: "02"
-DetalleMensaje: "mesnjae"
-FechaEmisionDoc: "12041996"
-Mensaje: "3"
-MontoTotalImpuesto: "23"
-MontoTotalImpuestoAcreditar: "70"
-TotalFactura: "23"
-correo_emisor: "123"
-documento: "tiquete"
-nombre_emisor: "emisor"
-NumeroCedulaEmisor: "123"
-telefono_emisor: "123"
+Clave: "50625091900310122400600100002010000016878100000922"
+CondicionImpuesto: "01"
+DetalleMensaje: "mensae"
+FechaEmisionDoc: "2019-09-25T14:21:33"
+Mensaje: "2"
+MontoTotalDeGastoAplicableRef: "23"
+MontoTotalImpuesto: ""
+MontoTotalImpuestoAcreditar: "50"
+NumeroCedulaEmisor: ""
+TotalFactura: "10000.0000"
+correo_emisor: "superpartes2015@gmail.com"
+documento: "Factura Electronica"
+id_documento: "4375"
+nombre_emisor: "SUPER PARTES S.A."
+telefono_emisor: "22351394"
 tipo_doc_emisor: "02"
-
-Faltan: MontoTotalDeGastoAplicable, id_documento
 
 
 data
