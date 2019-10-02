@@ -47,6 +47,30 @@ export const mandarARevision = (id, db, token) => async dispatch => {
     }
 }
 
+export const cargarDocumento = (file, db, token) => async dispatch => {
+
+    const formData = new FormData();
+
+    formData.append('file',file);
+
+    const respuesta = await axios.post( `${environment.CARGAR_DOCUMENTO}/${db}`, formData,{
+        headers: {
+            'content-type': 'multipart/form-data',
+            Authorization:  `Bearer ${token}`
+        }
+    });
+    
+    console.log(respuesta);
+}
+
+export const getFragmentarDocumentos = (db, token) => async dispatch => {
+
+    const respuesta = await axios.get( `${environment.FRAGMENTAR_DOCUMENTO}/${db}`,  { headers: { Authorization:`Bearer ${token}` } });
+    
+    console.log(respuesta);
+}
+
+
 export const verPDFAction = ( db, id, token ) => async () => {
 
     //await axios.get( `${environment.VER_PDF}/${db}/${id}`,  { headers: { Authorization:`Bearer ${token}`, 'Content-Type': 'application/pdf', 'Access-Control-Allow-Origin': '*', 'X-Content-Type-Options': 'nosniff' } });

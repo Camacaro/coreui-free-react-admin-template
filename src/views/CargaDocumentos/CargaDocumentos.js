@@ -10,9 +10,10 @@ import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import Swal from 'sweetalert2'
 
+
 /** Redux */
 import { connect } from 'react-redux';
-import { getDocumentos, mostrarDocumentos, putDocumento, mandarARevision } from '../../actions/cargaDocumentos-action';
+import { getDocumentos, mostrarDocumentos, putDocumento, mandarARevision, cargarDocumento, getFragmentarDocumentos } from '../../actions/cargaDocumentos-action';
 import { obtenerUsuario } from '../../actions/user-action';
 import environment from '../../config';
 
@@ -63,7 +64,7 @@ class CargaDocumentos extends Component {
     }
 
     async componentDidMount(){
-        
+
         this.props.obtenerUsuario();
 
         const { usuario } = this.props;
@@ -464,6 +465,22 @@ class CargaDocumentos extends Component {
         }        
     };
 
+    onChangeDocument = (e) => {
+        this.setState({
+
+            file: e.target.files[0]
+
+        }, async () => { 
+
+            console.log(this.state.file);
+            await this.props.cargarDocumento(this.state.file, this.state.usuario.db, this.state.usuario.access_token);
+        });
+    }
+
+    async fragmentarDocumentos() {
+        await this.props.getFragmentarDocumentos( this.state.usuario.db, this.state.usuario.access_token );
+    }
+
     render() {
 
         let dataRow = [];
@@ -501,18 +518,61 @@ class CargaDocumentos extends Component {
                 </Modal>
 
                 <Row> 
+                <Col xs="12" lg="12">
+                        <Card>
+                            <CardHeader>
+                                <i className="fa fa-align-justify"></i> Cargar Documento
+                            </CardHeader>
+                            <CardBody>
+
+                                <Button color="danger" className="mb-2" onClick={ () => this.fragmentarDocumentos() }>Generar Compra</Button>{' '}
+                                
+                                <Form>
+                                    <FormGroup >
+                                        <div className="controls">
+                                            <InputGroup className="input-prepend">
+
+                                                <div className="input-group">
+                                                    <div className="input-group-prepend">
+                                                        <span className="input-group-text" id="inputGroupFileAddon01">
+                                                            Cargar XML
+                                                        </span>
+                                                    </div>
+                                                    <div className="custom-file">
+                                                        <input
+                                                            type="file"
+                                                            className="custom-file-input"
+                                                            aria-describedby="inputGroupFileAddon01"
+                                                            onChange={ this.onChangeDocument }
+                                                            accept="text/xml"
+                                                        />
+                                                        <label className="custom-file-label" htmlFor="inputGroupFile01">
+                                                            Elegir Archivo
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                            </InputGroup>
+                                        </div>
+                                        
+                                    </FormGroup>
+                                </Form>
+                            </CardBody>
+                        </Card>
+
+                    </Col>
+
                     <Col xs="12" lg="12">
                         <Card>
                             <CardHeader>
                                 <i className="fa fa-align-justify"></i> Documentos de hacienda
                             </CardHeader>
                             <CardBody>
-
                                 <BootstrapTable data={dataRow} striped hover  pagination >
                                     <TableHeaderColumn isKey dataField='id_documento'   width='160px'>Documento ID</TableHeaderColumn>
                                     <TableHeaderColumn dataField='documento'            width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Documento</TableHeaderColumn>
                                     <TableHeaderColumn dataField='nombre_emisor'        width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Emisor</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='FechaEmisionDoc'      width='300px' filter={ { type: 'DateFilter' } } dataFormat={ this.dateFormatter } >Fecha Doc</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='FechaEmisionDoc'      width='300px' dataFormat={ this.dateFormatter } filter={ { type: 'DateFilter' } }  >Fecha Doc</TableHeaderColumn>
                                     <TableHeaderColumn dataField='MontoTotalImpuesto'   width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Monto Impuesto</TableHeaderColumn>
                                     <TableHeaderColumn dataField='consecutivo'          width='200px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Consecutivo</TableHeaderColumn>
                                     <TableHeaderColumn dataField='TotalFactura'         width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Total Doc</TableHeaderColumn>
@@ -528,6 +588,7 @@ class CargaDocumentos extends Component {
                         </Card>
 
                     </Col>
+                    
                 </Row>
 
                 <Modal isOpen={this.state.modal} toggle={this.cerrarModalAceptarRechazar} className={'modal-lg'}>
@@ -586,4 +647,4 @@ const mapStateToProps = state => {
 };
 
 //export default CargaDocumentos;
-export default connect(mapStateToProps, {getDocumentos, obtenerUsuario, mostrarDocumentos, putDocumento, mandarARevision})(CargaDocumentos);
+export default connect(mapStateToProps, {getDocumentos, obtenerUsuario, mostrarDocumentos, putDocumento, mandarARevision, cargarDocumento, getFragmentarDocumentos})(CargaDocumentos);
