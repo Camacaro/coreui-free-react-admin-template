@@ -67,7 +67,11 @@ export const getFragmentarDocumentos = (db, token) => async dispatch => {
 
     const respuesta = await axios.get( `${environment.FRAGMENTAR_DOCUMENTO}/${db}`,  { headers: { Authorization:`Bearer ${token}` } });
     
-    console.log(respuesta);
+    if(respuesta.status === 200){
+        return respuesta.data
+    } else {
+        return respuesta.data.ok = false;
+    }
 }
 
 

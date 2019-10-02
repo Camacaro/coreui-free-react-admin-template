@@ -3,7 +3,7 @@ import { Card, CardBody, CardHeader, Col, Row, Button,
     Modal, ModalBody, ModalFooter, ModalHeader,
     Nav, NavItem, NavLink,  TabContent, TabPane,
     Form, FormGroup,  Input, InputGroup, InputGroupAddon,  Label, InputGroupText,
-    Alert,
+    Alert, FormText
  } from 'reactstrap';
 // import { MDBDataTable, MDBBtn, MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
@@ -16,6 +16,8 @@ import { connect } from 'react-redux';
 import { getDocumentos, mostrarDocumentos, putDocumento, mandarARevision, cargarDocumento, getFragmentarDocumentos } from '../../actions/cargaDocumentos-action';
 import { obtenerUsuario } from '../../actions/user-action';
 import environment from '../../config';
+import { ExportCSV } from '../../helper/excel';
+
 
 const LOAD = <div className="sk-circle">
 <div className="sk-circle1 sk-child"></div>
@@ -54,6 +56,10 @@ class CargaDocumentos extends Component {
     telefonoEmisor = React.createRef();
     correoEmisor = React.createRef();
 
+    // Reporte
+    dateIn = React.createRef();
+    dateOut = React.createRef();
+
     state = {
         usuario: {},
         modal: false,
@@ -61,6 +67,7 @@ class CargaDocumentos extends Component {
         documento: '',
         error: false,
         cargar: false,
+        dataReporte: '',
     }
 
     async componentDidMount(){
@@ -478,7 +485,50 @@ class CargaDocumentos extends Component {
     }
 
     async fragmentarDocumentos() {
-        await this.props.getFragmentarDocumentos( this.state.usuario.db, this.state.usuario.access_token );
+        
+        this.setState({cargar: true});
+        
+        const respuesta = await this.props.getFragmentarDocumentos( this.state.usuario.db, this.state.usuario.access_token );
+
+        if ( respuesta.ok ) {
+
+            this.setState({cargar: false});
+
+            Swal.fire(
+                'Documentos Hacienda!',
+                respuesta.message,
+                'success'
+            );
+        }
+    }
+
+    descargarReporte(){
+
+        const dateIn =  new Date( this.dateIn.current.value );
+        const dateOut =  new Date( this.dateOut.current.value );
+
+        if (dateIn == '' || dateOut == '') {
+            
+            return Swal.fire(
+                'Descargar Reporte!',
+                'Debe llenar los campos de fecha',
+                'error'
+            );
+
+        } else {
+
+            const documentos = [...this.props.documentos];
+    
+            const dataExport = documentos.filter( documento => {
+                
+                let date = new Date(documento.FechaEmisionDoc);
+                return (date >= dateIn && date <= dateOut);
+            } );
+
+            this.setState({
+                dataReporte: dataExport 
+            });
+        }
     }
 
     render() {
@@ -556,6 +606,24 @@ class CargaDocumentos extends Component {
                                         </div>
                                         
                                     </FormGroup>
+                                </Form>
+                                
+                                <Label htmlFor="exampleInputName2" className="pr-1">Descargar Reporte</Label>
+
+                                <Form inline>
+                                    
+                                    <FormGroup className="pr-1">
+                                        <Input innerRef={this.dateIn} type="date" id="date-in" name="date-input" placeholder="inicio" />
+                                        <FormText color="muted"> </FormText>
+                                    </FormGroup>
+                                    <FormGroup className="pr-1">
+                                        <Input innerRef={this.dateOut} type="date" id="date-out" name="date-input" placeholder="fin" />
+                                        <FormText color="muted"> </FormText>
+                                    </FormGroup>
+
+                                    <Button color="primary" onClick={ () => this.descargarReporte() }>filtrar</Button> {' '}
+                                    
+                                    { this.state.dataReporte != '' ? <ExportCSV csvData={this.state.dataReporte} fileName="file" /> : ''} 
                                 </Form>
                             </CardBody>
                         </Card>
