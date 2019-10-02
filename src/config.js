@@ -14,6 +14,8 @@ export const AUTHORIZATION = (token) => {
  * /documentoshacienda/{admin_sng}
  * /verpdf/{admin_sng}/{2}
  * /verxml/admin_sng/1
+ * documentoshacienda/cargardocumento/{db}
+ * documentoshacienda/fragmentarxml/{db}
  */
 const environment  = {
     URL,
@@ -22,6 +24,8 @@ const environment  = {
     DOCUMENTOS: `${URL}/documentoshacienda`,
     VER_PDF: `${URL}/verpdf`,
     VER_XML: `${URL}/verxml`,
+    CARGAR_DOCUMENTO: `${URL}/documentoshacienda/cargardocumento`,
+    FRAGMENTAR_DOCUMENTO: `${URL}/documentoshacienda/fragmentarxml`,
 };
 
 export default environment ;

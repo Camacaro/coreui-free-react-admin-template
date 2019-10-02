@@ -79,3 +79,11 @@ public  function insertRow( $data , $id)
         }    
         return $id;    
 	}
+
+
+UPLOAD_ERR_NO_TMP_DIR
+Valor: 6; Falta la carpeta temporal. Introducido en PHP 5.0.3.
+
+Go to php.ini and set it there:
+
+upload_tmp_dir = /tmp
