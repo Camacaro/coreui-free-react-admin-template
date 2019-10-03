@@ -216,7 +216,7 @@ class DocumentosRechazados extends Component {
                             </CardHeader>
                             <CardBody>
                                 <BootstrapTable data={dataRow} striped hover  pagination >
-                                    <TableHeaderColumn isKey dataField='id_documento'   width='160px'>Documento ID</TableHeaderColumn>
+                                    <TableHeaderColumn isKey dataField='id_documento'   width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } }>Documento ID</TableHeaderColumn>
                                     <TableHeaderColumn dataField='documento'            width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Documento</TableHeaderColumn>
                                     <TableHeaderColumn dataField='nombre_emisor'        width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Emisor</TableHeaderColumn>
                                     <TableHeaderColumn dataField='FechaEmisionDoc'      width='300px' dataFormat={ this.dateFormatter } filter={ { type: 'DateFilter' } }  >Fecha Doc</TableHeaderColumn>
