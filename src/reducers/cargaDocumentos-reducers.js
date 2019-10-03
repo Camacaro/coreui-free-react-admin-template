@@ -1,4 +1,4 @@
-import { OBTENER_DOCUMENTOS, MOSTRAR_DOCUMENTOS } from '../actions/types';
+import { OBTENER_DOCUMENTOS, MOSTRAR_DOCUMENTOS, ELIMINAR_DOCUMENTO } from '../actions/types';
 
 /** Cada reducers tiene su propio state */
 const initialState = {
@@ -17,6 +17,12 @@ export default function(state = initialState, action) {
 
         case MOSTRAR_DOCUMENTOS:
             return state;
+
+        case ELIMINAR_DOCUMENTO:
+            return {
+                ...state,
+                documentos: state.documentos.filter( doc => doc.id_documento !== action.payload )
+            }
 
         default:
             return state;

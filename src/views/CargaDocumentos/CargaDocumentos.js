@@ -13,7 +13,7 @@ import Swal from 'sweetalert2'
 
 /** Redux */
 import { connect } from 'react-redux';
-import { getDocumentos, mostrarDocumentos, putDocumento, mandarARevision, cargarDocumento, getFragmentarDocumentos } from '../../actions/cargaDocumentos-action';
+import { getDocumentos, mostrarDocumentos, putDocumento, mandarARevision, cargarDocumento, getFragmentarDocumentos, eliminarDocuemnto } from '../../actions/cargaDocumentos-action';
 import { obtenerUsuario } from '../../actions/user-action';
 import environment from '../../config';
 import { ExportCSV } from '../../helper/excel';
@@ -111,13 +111,15 @@ class CargaDocumentos extends Component {
 
         if ( respuesta.ok ) {
 
-            this.props.documentos.map( documento => {
+            // this.props.documentos.map( documento => {
                 
-                if ( documento.id_documento == id ) {
+            //     if ( documento.id_documento == id ) {
                     
-                    documento.Estatus = respuesta.estatus;
-                }
-            });
+            //         documento.Estatus = respuesta.estatus;
+            //     }
+            // });
+
+            await this.props.eliminarDocuemnto(id);
 
             this.setState({cargar: false});
 
@@ -715,4 +717,4 @@ const mapStateToProps = state => {
 };
 
 //export default CargaDocumentos;
-export default connect(mapStateToProps, {getDocumentos, obtenerUsuario, mostrarDocumentos, putDocumento, mandarARevision, cargarDocumento, getFragmentarDocumentos})(CargaDocumentos);
+export default connect(mapStateToProps, {getDocumentos, obtenerUsuario, mostrarDocumentos, putDocumento, mandarARevision, cargarDocumento, getFragmentarDocumentos, eliminarDocuemnto})(CargaDocumentos);

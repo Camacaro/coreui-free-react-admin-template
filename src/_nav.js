@@ -35,7 +35,7 @@ export default {
     },
     {
         name: 'Docs por Revisar',
-        url: '/theme/typography',
+        url: '/documentos-por-revisar',
         icon: 'icon-reload',
     },
     {
