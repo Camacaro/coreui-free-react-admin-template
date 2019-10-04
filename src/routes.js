@@ -4,6 +4,8 @@ const CargaDocumentos = React.lazy(() => import('./views/CargaDocumentos/CargaDo
 const DocumentosAceptados = React.lazy(() => import('./views/DocumentosAceptados/DocumentosAceptados'));
 const DocumentosRechazados = React.lazy(() => import('./views/DocumentosRechazados/DocumentosRechazados'));
 const DocumentosPorRevisar = React.lazy(() => import('./views/DocumentosPorRevisar/DocumentosPorRevisar'));
+const Reportes = React.lazy(() => import('./views/Reporte/Reporte'));
+
 
 const Breadcrumbs = React.lazy(() => import('./views/Base/Breadcrumbs'));
 const Cards = React.lazy(() => import('./views/Base/Cards'));
@@ -90,6 +92,9 @@ const routes = [
   { path: '/documentos-aceptados', exact: true, name: 'Documentos Aceptados', component: DocumentosAceptados }, 
   { path: '/documentos-rechazados', exact: true, name: 'Documentos Rechazados', component: DocumentosRechazados }, 
   { path: '/documentos-por-revisar', exact: true, name: 'Documentos Por Revisar', component: DocumentosPorRevisar }, 
+  { path: '/reportes', exact: true, name: 'Reportes', component: Reportes }, 
+
+  
 ];
 
 export default routes;

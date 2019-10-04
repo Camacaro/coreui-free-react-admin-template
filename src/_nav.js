@@ -40,7 +40,7 @@ export default {
     },
     {
         name: 'Reportes',
-        url: '/theme/typography',
+        url: '/reportes',
         icon: 'icon-book-open',
     },
     // {
