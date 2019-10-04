@@ -11,7 +11,6 @@ import Swal from 'sweetalert2'
 /** Redux */
 import { connect } from 'react-redux';
 import { obtenerUsuario } from '../../actions/user-action';
-import environment from '../../config';
 import { ExportCSV } from '../../helper/excel';
 
 import { getReportes, mostrarReportes } from '../../actions/Reportes-action';
@@ -69,7 +68,7 @@ class Reporte extends Component {
 
 
     dateFormatter = (cell, row) => {
-        const date = new Date(row.FechaEmisionDoc);
+        const date = new Date(row.fecha_factura);
         
         return `${('0' + date.getDate()).slice(-2)}/${('0' + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()}`;
     }
@@ -93,7 +92,7 @@ class Reporte extends Component {
     
             const dataExport = documentos.filter( documento => {
                 
-                let date = new Date(documento.FechaEmisionDoc);
+                let date = new Date(documento.fecha_factura);
                 return (date >= dateIn && date <= dateOut);
             } );
 
@@ -106,17 +105,22 @@ class Reporte extends Component {
     render() {
 
         let dataRow = [];
-        console.log(this.props.reportes);
+        
         this.props.reportes.map( documento => {
 
             dataRow.push({
                 'id_compra' : documento.id_compra,
                 'proveedor': documento.proveedor,
-                'nombre_emisor': documento.nombre_emisor,
-                'FechaEmisionDoc': documento.FechaEmisionDoc,
-                'MontoTotalImpuesto': documento.MontoTotalImpuesto,
-                'TotalFactura': documento.TotalFactura,
-                'DetalleMensaje': documento.DetalleMensaje,
+                'n_fact_compra': documento.n_fact_compra,
+                'fecha_factura': documento.fecha_factura,
+                'credito_compra': documento.credito_compra,
+                'sub_total_compra': documento.sub_total_compra,
+                'descuento_compra': documento.descuento_compra,
+                'full_tax_compra': documento.full_tax_compra,
+                'full_total_compra': documento.full_total_compra,
+                'TotalVentaNeta': documento.TotalVentaNeta,
+                'TotalVenta': documento.TotalVenta,
+                'TotalGravado': documento.TotalGravado
             });
 
         } );
@@ -169,13 +173,17 @@ class Reporte extends Component {
                             <CardBody>
                                 <BootstrapTable data={dataRow} striped hover  pagination >
                                     <TableHeaderColumn isKey dataField='id_compra'   width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } }> ID</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='proveedor'            width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Proveedor</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='nombre_emisor'        width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Emisor</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='FechaEmisionDoc'      width='300px' dataFormat={ this.dateFormatter } filter={ { type: 'DateFilter' } }  >Fecha Doc</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='MontoTotalImpuesto'   width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Monto Impuesto</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='TotalFactura'         width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Total Doc</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='DetalleMensaje'       width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Detalle Mensaje</TableHeaderColumn>
-                                    
+                                    <TableHeaderColumn dataField='proveedor'            width='300px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Proveedor</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='n_fact_compra'        width='180px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Consecutivo</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='fecha_factura'      width='300px'  dataFormat={ this.dateFormatter } filter={ { type: 'DateFilter' } }  >Fecha Factura</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='credito_compra'   width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Credito Compra</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='sub_total_compra'         width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >SubTota</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='descuento_compra'       width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Descuento</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='full_tax_compra'       width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Total Impuesto </TableHeaderColumn>
+                                    <TableHeaderColumn dataField='full_total_compra'       width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Total</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='TotalVentaNeta'       width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Total Venta Neta</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='TotalVenta'       width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Total Venta</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='TotalGravado'       width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Total Gravado</TableHeaderColumn>
                                 </BootstrapTable>,
 
                             </CardBody>

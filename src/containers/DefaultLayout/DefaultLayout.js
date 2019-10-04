@@ -49,8 +49,6 @@ class DefaultLayout extends Component {
   estaLogeado = () => {
     
     const { usuario } = this.props;
-    
-    console.log(usuario);
 
     if( usuario.access_token ) {
 

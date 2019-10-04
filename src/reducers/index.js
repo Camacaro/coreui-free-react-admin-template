@@ -5,6 +5,7 @@ import documentosAceptadosReducer from './DocumentosAceptados-reducers';
 import documentosRechazadosReducer from './DocumentosRechazados-reducers';
 import documentosPorRevisarReducer from './DocumentosPorRevisar-reducers';
 import reportesReducer from './Reportes-reducers';
+import graficasReducer from './Dashboard-reducers';
 
 export default combineReducers({
     usuario: loginReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
     documentosAceptados: documentosAceptadosReducer,
     documentosRechazados: documentosRechazadosReducer,
     documentosPorRevisar: documentosPorRevisarReducer,
-    reportes: reportesReducer
+    reportes: reportesReducer,
+    graficas: graficasReducer
 });
