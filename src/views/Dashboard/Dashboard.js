@@ -5,6 +5,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Modal, ModalBody,
 } from 'reactstrap';
 
 /** Redux */
@@ -15,6 +16,21 @@ import { getGraficaUNO, mostrarGraficaUNO,
     getGraficaTRES, mostrarGraficaTRES,
     getGraficaCUATRO, mostrarGraficaCUATRO,
     getGraficaCINCO, mostrarGraficaCINCO } from '../../actions/dashboard-action';
+
+const LOAD = <div className="sk-circle">
+    <div className="sk-circle1 sk-child"></div>
+    <div className="sk-circle2 sk-child"></div>
+    <div className="sk-circle3 sk-child"></div>
+    <div className="sk-circle4 sk-child"></div>
+    <div className="sk-circle5 sk-child"></div>
+    <div className="sk-circle6 sk-child"></div>
+    <div className="sk-circle7 sk-child"></div>
+    <div className="sk-circle8 sk-child"></div>
+    <div className="sk-circle9 sk-child"></div>
+    <div className="sk-circle10 sk-child"></div>
+    <div className="sk-circle11 sk-child"></div>
+    <div className="sk-circle12 sk-child"></div>
+    </div>;
     
 class Dashboard extends Component {
     
@@ -43,7 +59,12 @@ class Dashboard extends Component {
     state = {
         usuario: '',
         dropdownOpen: false,
-        radioSelected: 2
+        radioSelected: 2,
+        graficaUno: {},
+        graficaDos: {},
+        graficaTres: {},
+        graficaCuatro: {},
+        graficaCinco: {},
     }
 
     constructor(props) {
@@ -63,7 +84,7 @@ class Dashboard extends Component {
             usuario
         });
 
-        // this.setState({cargar: true});
+        this.setState({cargar: true});
 
         // Grfica uno
         await this.props.getGraficaDOS( usuario.db, usuario.access_token );
@@ -84,7 +105,78 @@ class Dashboard extends Component {
          // grafica cinco
          await this.props.getGraficaCINCO( usuario.db, usuario.access_token );
          await this.props.mostrarGraficaCINCO();
-        // this.setState({cargar: false});
+
+
+        const graficaUno = {
+            labels: [
+                `Aceptados ${this.props.graficaUno.aceptadas} %`,
+                `Rechazados ${this.props.graficaUno.rechazadas} %`,
+                `Sin Estatus ${this.props.graficaUno.sin_estatus} %`
+            ],
+            datasets: [{
+                data: [
+                    this.props.graficaUno.aceptadas, 
+                    this.props.graficaUno.rechazadas, 
+                    this.props.graficaUno.sin_estatus
+                ],
+                backgroundColor: [
+                  '#F7464A',
+                  '#46BFBD',
+                  '#FDB45C',
+                ],
+                hoverBackgroundColor: [
+                  '#F7464A',
+                  '#46BFBD',
+                  '#FDB45C',
+                ],
+            }],
+        }
+
+        const graficaDos = this.estructuraGraficaDos();
+
+        const graficaTres = {
+            labels: [...this.props.graficaTres.leyenda],
+            datasets: [{
+                data: [...this.props.graficaTres.valores],
+                backgroundColor: [
+                  '#F7464A',
+                  '#46BFBD',
+                  '#FDB45C',
+                ],
+                hoverBackgroundColor: [
+                  '#F7464A',
+                  '#46BFBD',
+                  '#FDB45C',
+                ],
+            }],
+        }
+
+        const graficaCuatro = this.estructuraGraficaCuatro();
+
+        const graficaCinco = {
+            labels: ['Aceptadas', 'Rechazadas', 'Sin Estatus'],
+            datasets: [
+              {
+                label: this.props.graficaCinco.titulo,
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: [...this.props.graficaCinco.valores],
+              },
+            ],
+        };
+
+        this.setState({
+            graficaUno,
+            graficaDos,
+            graficaTres,
+            graficaCuatro,
+            graficaCinco,
+        });
+
+        this.setState({cargar: false});
     }
 
   toggle() {
@@ -178,145 +270,92 @@ class Dashboard extends Component {
 
     render() {
 
-        const graficaUno = {
-            labels: [
-                `Aceptados ${this.props.graficaUno.aceptadas} %`,
-                `Rechazados ${this.props.graficaUno.rechazadas} %`,
-                `Sin Estatus ${this.props.graficaUno.sin_estatus} %`
-            ],
-            datasets: [{
-                data: [
-                    this.props.graficaUno.aceptadas, 
-                    this.props.graficaUno.rechazadas, 
-                    this.props.graficaUno.sin_estatus
-                ],
-                backgroundColor: [
-                  '#F7464A',
-                  '#46BFBD',
-                  '#FDB45C',
-                ],
-                hoverBackgroundColor: [
-                  '#F7464A',
-                  '#46BFBD',
-                  '#FDB45C',
-                ],
-            }],
-        }
-
-        const graficaDos = this.estructuraGraficaDos();
-
-        const graficaTres = {
-            labels: [...this.props.graficaTres.leyenda],
-            datasets: [{
-                data: [...this.props.graficaTres.valores],
-                backgroundColor: [
-                  '#F7464A',
-                  '#46BFBD',
-                  '#FDB45C',
-                ],
-                hoverBackgroundColor: [
-                  '#F7464A',
-                  '#46BFBD',
-                  '#FDB45C',
-                ],
-            }],
-        }
-
-        const graficaCuatro = this.estructuraGraficaCuatro();
-
-        const graficaCinco = {
-            labels: ['Aceptadas', 'Rechazadas', 'Sin Estatus'],
-            datasets: [
-              {
-                label: this.props.graficaCinco.titulo,
-                backgroundColor: 'rgba(255,99,132,0.2)',
-                borderColor: 'rgba(255,99,132,1)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                hoverBorderColor: 'rgba(255,99,132,1)',
-                data: [...this.props.graficaCinco.valores],
-              },
-            ],
-        };
+        
 
         return (
 
             <div className="animated fadeIn">
-            <CardColumns className="cols-2">
-                <Card>
-                    <CardHeader>
-                        Grafico de Facturas segun Estatus
-                    <div className="card-header-actions">
-                        <small className="text-muted"> { this.props.graficaUno.fecha } </small>
-                    </div>
-                    </CardHeader>
-                    <CardBody>
-                    <div className="chart-wrapper">
-                        <Pie data={ graficaUno }  />
-                    </div>
-                    </CardBody>
-                </Card>
+                <Modal isOpen={this.state.cargar} className="modal-load">
+                    <ModalBody>
+
+                        { LOAD }
+                    
+                    </ModalBody>
+                </Modal>
+                <CardColumns className="cols-2">
+                    <Card>
+                        <CardHeader>
+                            Grafico de Facturas segun Estatus
+                        <div className="card-header-actions">
+                            <small className="text-muted"> { this.props.graficaUno.fecha } </small>
+                        </div>
+                        </CardHeader>
+                        <CardBody>
+                        <div className="chart-wrapper">
+                            <Pie data={ this.state.graficaUno }  />
+                        </div>
+                        </CardBody>
+                    </Card>
 
 
-                <Card>
-                    <CardHeader>
-                        {this.props.graficaDos.titulo}
-                    <div className="card-header-actions">
-                        <small className="text-muted">{ this.props.graficaDos.subtitulo }</small>
-                    </div>
-                    </CardHeader>
-                    <CardBody>
-                    <div className="chart-wrapper">
-                        <Pie data={graficaDos} />
-                    </div>
-                    </CardBody>
-                </Card>
+                    <Card>
+                        <CardHeader>
+                            {this.props.graficaDos.titulo}
+                        <div className="card-header-actions">
+                            <small className="text-muted">{ this.props.graficaDos.subtitulo }</small>
+                        </div>
+                        </CardHeader>
+                        <CardBody>
+                        <div className="chart-wrapper">
+                            <Pie data={this.state.graficaDos} />
+                        </div>
+                        </CardBody>
+                    </Card>
 
 
-                <Card>
-                    <CardHeader>
-                        {this.props.graficaTres.titulo}
-                    <div className="card-header-actions">
-                        <small className="text-muted"> { this.props.graficaTres.subtitulo } </small>
-                    </div>
-                    </CardHeader>
-                    <CardBody>
-                    <div className="chart-wrapper">
-                        <Pie data={graficaTres} />
-                    </div>
-                    </CardBody>
-                </Card>
+                    <Card>
+                        <CardHeader>
+                            {this.props.graficaTres.titulo}
+                        <div className="card-header-actions">
+                            <small className="text-muted"> { this.props.graficaTres.subtitulo } </small>
+                        </div>
+                        </CardHeader>
+                        <CardBody>
+                        <div className="chart-wrapper">
+                            <Pie data={this.state.graficaTres} />
+                        </div>
+                        </CardBody>
+                    </Card>
 
-                <Card>
-                    <CardHeader>
-                        {this.props.graficaCuatro.titulo}
-                    <div className="card-header-actions">
-                        <small className="text-muted"> {this.props.graficaCuatro.subtitulo} </small>
-                    </div>
-                    </CardHeader>
-                    <CardBody>
-                    <div className="chart-wrapper">
-                        <Pie data={graficaCuatro}/>
-                    </div>
-                    </CardBody>
-                </Card>
+                    <Card>
+                        <CardHeader>
+                            {this.props.graficaCuatro.titulo}
+                        <div className="card-header-actions">
+                            <small className="text-muted"> {this.props.graficaCuatro.subtitulo} </small>
+                        </div>
+                        </CardHeader>
+                        <CardBody>
+                        <div className="chart-wrapper">
+                            <Pie data={this.state.graficaCuatro}/>
+                        </div>
+                        </CardBody>
+                    </Card>
 
-                <Card>
-                    <CardHeader>
-                        {this.props.getGraficaCINCO.titulo}
-                    <div className="card-header-actions">
-                        
-                    </div>
-                    </CardHeader>
-                    <CardBody>
-                    <div className="chart-wrapper">
-                        <Bar data={graficaCinco} />
-                    </div>
-                    </CardBody>
-                </Card>
-            </CardColumns>
-        </div>
-        
+                    <Card>
+                        <CardHeader>
+                            {this.props.getGraficaCINCO.titulo}
+                        <div className="card-header-actions">
+                            
+                        </div>
+                        </CardHeader>
+                        <CardBody>
+                        <div className="chart-wrapper">
+                            <Bar data={this.state.graficaCinco} />
+                        </div>
+                        </CardBody>
+                    </Card>
+                </CardColumns>
+            </div>
         );
     }
 }

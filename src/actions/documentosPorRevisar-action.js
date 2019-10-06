@@ -1,5 +1,5 @@
 import {OBTENER_DOCUMENTOS_POR_REVISAR, MOSTRAR_DOCUMENTOS_POR_REVISAR, ELIMINAR_DOCUMENTO_POR_REVISAR } from './types';
-import environment, { AUTHORIZATION } from '../config';
+import environment from '../config';
 import axios from 'axios';
 
 

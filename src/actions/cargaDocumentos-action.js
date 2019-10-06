@@ -1,5 +1,5 @@
 import { OBTENER_DOCUMENTOS, MOSTRAR_DOCUMENTOS, GUARDAR_DOCUMENTO, ELIMINAR_DOCUMENTO } from './types';
-import environment, { AUTHORIZATION } from '../config';
+import environment from '../config';
 import axios from 'axios';
 
 

@@ -4,18 +4,22 @@ import axios from 'axios';
 
 export const loginAction = ( usuario ) => async dispatch => {
     
-    const headers = {'Content-Type': 'application/json'};
-    const respuesta = await axios.post( environment.LOGIN, usuario, headers);
-    //const respuesta = await axios.post( environment.testURL, usuario, headers);
-    
-    // console.log(respuesta.data);
+    try {
+        const headers = {'Content-Type': 'application/json'};
+        const respuesta = await axios.post( environment.LOGIN, usuario, headers);
+        // Success 🎉
+        
+        dispatch({
+            type: LOGIN,
+            payload: respuesta.data
+        });
 
-    // await timeout(3000);
+        return respuesta.data.ok;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
 
-    dispatch({
-        type: LOGIN,
-        payload: respuesta.data
-    });
 }
 
 export const obtenerUsuario = () => async dispatch => {

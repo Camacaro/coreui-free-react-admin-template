@@ -4,6 +4,7 @@ import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGr
 /** Redux */
 import { connect } from 'react-redux';
 import { loginAction, obtenerUsuario  } from '../../../actions/user-action';
+import Swal from 'sweetalert2';
 
 const LOAD = <div className="sk-circle">
 <div className="sk-circle1 sk-child"></div>
@@ -78,16 +79,30 @@ class Login extends Component {
 
             this.setState({cargar: true});
 
-            await this.props.loginAction( data );
+            const respuesta = await this.props.loginAction( data );
 
-            const { usuario } = this.props;
+            if ( respuesta ) {
 
-            if( usuario ) {
-                
+                const { usuario } = this.props;
+    
+                if( usuario ) {
+                    
+                    this.setState({cargar: false});
+    
+                    return this.props.history.push('/dashboard'); 
+                }
+
+            } else {
+
                 this.setState({cargar: false});
 
-                return this.props.history.push('/dashboard'); 
+                return Swal.fire(
+                    'Login!',
+                    'Credenciales invalidas',
+                    'error'
+                );
             }
+
         }
 
     }

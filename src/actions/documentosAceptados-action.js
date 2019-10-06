@@ -1,5 +1,5 @@
 import { OBTENER_DOCUMENTOS_ACEPTADOS, MOSTRAR_DOCUMENTOS_ACEPTADOS } from './types';
-import environment, { AUTHORIZATION } from '../config';
+import environment from '../config';
 import axios from 'axios';
 
 

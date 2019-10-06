@@ -3,7 +3,7 @@ import { OBTENER_GRAFICA_UNO, MOSTRAR_GRAFICA_UNO,
     OBTENER_GRAFICA_TRES, MOSTRAR_GRAFICA_TRES,
     OBTENER_GRAFICA_CUATRO, MOSTRAR_GRAFICA_CUATRO,
     OBTENER_GRAFICA_CINCO, MOSTRAR_GRAFICA_CINCO } from './types';
-import environment, { AUTHORIZATION } from '../config';
+import environment from '../config';
 import axios from 'axios';
 
 

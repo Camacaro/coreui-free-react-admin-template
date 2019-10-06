@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Button,
-    Modal, ModalBody, ModalFooter, ModalHeader,
-    Nav, NavItem, NavLink,  TabContent, TabPane,
-    Form, FormGroup,  Input, InputGroup, InputGroupAddon,  Label, InputGroupText,
-    Alert, FormText
+    Modal, ModalBody,
+    Form, FormGroup,  Input, FormText
  } from 'reactstrap';
 // import { MDBDataTable, MDBBtn, MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 
 /** Redux */

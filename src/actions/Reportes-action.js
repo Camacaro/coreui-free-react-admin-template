@@ -1,5 +1,5 @@
 import { OBTENER_REPORTES, MOSTRAR_REPORTES } from './types';
-import environment, { AUTHORIZATION } from '../config';
+import environment from '../config';
 import axios from 'axios';
 
 
