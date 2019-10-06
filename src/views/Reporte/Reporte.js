@@ -172,10 +172,10 @@ class Reporte extends Component {
                             </CardHeader>
                             <CardBody>
                                 <BootstrapTable data={dataRow} striped hover  pagination >
-                                    <TableHeaderColumn isKey dataField='id_compra'   width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } }> ID</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='proveedor'            width='300px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Proveedor</TableHeaderColumn>
+                                    {/* <TableHeaderColumn isKey dataField='id_compra'   width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } }> ID</TableHeaderColumn> */}
+                                    <TableHeaderColumn isKey dataField='proveedor'            width='300px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Proveedor</TableHeaderColumn>
                                     <TableHeaderColumn dataField='n_fact_compra'        width='180px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Consecutivo</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='fecha_factura'      width='300px'  dataFormat={ this.dateFormatter } filter={ { type: 'DateFilter' } }  >Fecha Factura</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='fecha_factura'      width='170px'  dataFormat={ this.dateFormatter } filter={ { type: 'DateFilter' } }  >Fecha Factura</TableHeaderColumn>
                                     <TableHeaderColumn dataField='credito_compra'   width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Credito Compra</TableHeaderColumn>
                                     <TableHeaderColumn dataField='sub_total_compra'         width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >SubTota</TableHeaderColumn>
                                     <TableHeaderColumn dataField='descuento_compra'       width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Descuento</TableHeaderColumn>

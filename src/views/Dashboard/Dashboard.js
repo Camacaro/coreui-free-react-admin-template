@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { Pie } from 'react-chartjs-2';
+import { Pie, Bar } from 'react-chartjs-2';
 import {
   CardColumns,
   Card,
@@ -10,9 +10,12 @@ import {
 /** Redux */
 import { connect } from 'react-redux';
 import { obtenerUsuario } from '../../actions/user-action';
-import { getGraficaUNO, mostrarGraficaUNO } from '../../actions/dashboard-action';
-
-
+import { getGraficaUNO, mostrarGraficaUNO,
+    getGraficaDOS, mostrarGraficaDOS,
+    getGraficaTRES, mostrarGraficaTRES,
+    getGraficaCUATRO, mostrarGraficaCUATRO,
+    getGraficaCINCO, mostrarGraficaCINCO } from '../../actions/dashboard-action';
+    
 class Dashboard extends Component {
     
     pie = {
@@ -40,27 +43,7 @@ class Dashboard extends Component {
     state = {
         usuario: '',
         dropdownOpen: false,
-        radioSelected: 2,
-        pie : {
-            labels: [
-              'Aceptados',
-              'Rechazados',
-              'Sin Estatus',
-            ],
-            datasets: [{
-                data: [300, 50, 100],
-                backgroundColor: [
-                  '#F7464A',
-                  '#46BFBD',
-                  '#FDB45C',
-                ],
-                hoverBackgroundColor: [
-                  '#F7464A',
-                  '#46BFBD',
-                  '#FDB45C',
-                ],
-            }],
-        }
+        radioSelected: 2
     }
 
     constructor(props) {
@@ -82,12 +65,25 @@ class Dashboard extends Component {
 
         // this.setState({cargar: true});
 
-        await this.props.getGraficaUNO( usuario.db, usuario.access_token );
-
+        // Grfica uno
+        await this.props.getGraficaDOS( usuario.db, usuario.access_token );
         await this.props.mostrarGraficaUNO();
 
-        console.log(this.props.graficaUno);
+        // Grfica dos
+        await this.props.getGraficaUNO( usuario.db, usuario.access_token );
+        await this.props.mostrarGraficaDOS();
 
+        // Grfica tres
+        await this.props.getGraficaTRES( usuario.db, usuario.access_token );
+        await this.props.mostrarGraficaTRES();
+
+        // grafica cuatro
+        await this.props.getGraficaCUATRO( usuario.db, usuario.access_token );
+        await this.props.mostrarGraficaCUATRO();
+
+         // grafica cinco
+         await this.props.getGraficaCINCO( usuario.db, usuario.access_token );
+         await this.props.mostrarGraficaCINCO();
         // this.setState({cargar: false});
     }
 
@@ -103,7 +99,82 @@ class Dashboard extends Component {
     });
   }
 
-  loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
+    loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
+
+    estructuraGraficaDos = () => {
+        
+        let leyenda = [];
+        let contador = 0;
+
+        this.props.graficaDos.leyenda.map(ley => {
+            leyenda.push( `${ley} (${this.props.graficaDos.valores[contador]}%) (Can. Fac.${this.props.graficaDos.facturas[contador]} ) ` );
+            contador++;
+        } );
+
+        return {
+            labels: leyenda,
+            datasets: [{
+                data: [...this.props.graficaDos.valores],
+                backgroundColor: [
+                  '#F7464A',
+                  '#46BFBD',
+                  '#FDB45C',
+                  '#F7464A',
+                  '#46BFBD',
+                  '#FDB45C',
+                  '#F7464A',
+                  '#46BFBD',
+                ],
+                hoverBackgroundColor: [
+                  '#F7464A',
+                  '#46BFBD',
+                  '#FDB45C',
+                  '#F7464A',
+                  '#46BFBD',
+                  '#FDB45C',
+                  '#F7464A',
+                  '#46BFBD',
+                ],
+            }],
+        }
+    }
+
+    estructuraGraficaCuatro = () => {
+        let leyenda = [];
+        let contador = 0;
+
+        this.props.graficaCuatro.leyenda.map(ley => {
+            leyenda.push( `${ley} (${this.props.graficaCuatro.porcentaje[contador]}%) (Monto ${this.props.graficaCuatro.monto[contador]}) ` );
+            contador++;
+        } );
+
+        return {
+            labels: leyenda,
+            datasets: [{
+                data: [...this.props.graficaCuatro.monto],
+                backgroundColor: [
+                  '#F7464A',
+                  '#46BFBD',
+                  '#FDB45C',
+                  '#F7464A',
+                  '#46BFBD',
+                  '#FDB45C',
+                  '#F7464A',
+                  '#46BFBD',
+                ],
+                hoverBackgroundColor: [
+                  '#F7464A',
+                  '#46BFBD',
+                  '#FDB45C',
+                  '#F7464A',
+                  '#46BFBD',
+                  '#FDB45C',
+                  '#F7464A',
+                  '#46BFBD',
+                ],
+            }]
+        }
+    }
 
     render() {
 
@@ -132,111 +203,117 @@ class Dashboard extends Component {
             }],
         }
 
-        const graficaDos = {
-            labels: [
-              '1 Dias',
-              '2 Dias',
-              '3 Dias',
-              '4 Dias',
-              '5 Dias',
-              '6 Dias',
-              '7 Dias',
-              '8 Dias',
-            ],
+        const graficaDos = this.estructuraGraficaDos();
+
+        const graficaTres = {
+            labels: [...this.props.graficaTres.leyenda],
             datasets: [{
-                data: [
-                    10, 20, 30, 40, 50, 60, 70, 80
-                ],
+                data: [...this.props.graficaTres.valores],
                 backgroundColor: [
                   '#F7464A',
                   '#46BFBD',
                   '#FDB45C',
-                  '#F7464A',
-                  '#46BFBD',
-                  '#FDB45C',
-                  '#F7464A',
-                  '#46BFBD',
                 ],
                 hoverBackgroundColor: [
                   '#F7464A',
                   '#46BFBD',
                   '#FDB45C',
-                  '#F7464A',
-                  '#46BFBD',
-                  '#FDB45C',
-                  '#F7464A',
-                  '#46BFBD',
                 ],
             }],
         }
+
+        const graficaCuatro = this.estructuraGraficaCuatro();
+
+        const graficaCinco = {
+            labels: ['Aceptadas', 'Rechazadas', 'Sin Estatus'],
+            datasets: [
+              {
+                label: this.props.graficaCinco.titulo,
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: [...this.props.graficaCinco.valores],
+              },
+            ],
+        };
 
         return (
 
             <div className="animated fadeIn">
             <CardColumns className="cols-2">
-            <Card>
-                <CardHeader>
-                    Grafico de Facturas segun Estatus
-                <div className="card-header-actions">
-                    <small className="text-muted"> { this.props.graficaUno.fecha } </small>
-                </div>
-                </CardHeader>
-                <CardBody>
-                <div className="chart-wrapper">
-                    <Pie data={ graficaUno } />
-                </div>
-                </CardBody>
-            </Card>
+                <Card>
+                    <CardHeader>
+                        Grafico de Facturas segun Estatus
+                    <div className="card-header-actions">
+                        <small className="text-muted"> { this.props.graficaUno.fecha } </small>
+                    </div>
+                    </CardHeader>
+                    <CardBody>
+                    <div className="chart-wrapper">
+                        <Pie data={ graficaUno }  />
+                    </div>
+                    </CardBody>
+                </Card>
 
 
-            <Card>
-                <CardHeader>
-                Pie Chart
-                <div className="card-header-actions">
-                    <a href="http://www.chartjs.org" className="card-header-action">
-                    <small className="text-muted">docs</small>
-                    </a>
-                </div>
-                </CardHeader>
-                <CardBody>
-                <div className="chart-wrapper">
-                    <Pie data={graficaDos} />
-                </div>
-                </CardBody>
-            </Card>
+                <Card>
+                    <CardHeader>
+                        {this.props.graficaDos.titulo}
+                    <div className="card-header-actions">
+                        <small className="text-muted">{ this.props.graficaDos.subtitulo }</small>
+                    </div>
+                    </CardHeader>
+                    <CardBody>
+                    <div className="chart-wrapper">
+                        <Pie data={graficaDos} />
+                    </div>
+                    </CardBody>
+                </Card>
 
 
-            <Card>
-                <CardHeader>
-                Pie Chart
-                <div className="card-header-actions">
-                    <a href="http://www.chartjs.org" className="card-header-action">
-                    <small className="text-muted">docs</small>
-                    </a>
-                </div>
-                </CardHeader>
-                <CardBody>
-                <div className="chart-wrapper">
-                    <Pie data={this.state.pie} />
-                </div>
-                </CardBody>
-            </Card>
+                <Card>
+                    <CardHeader>
+                        {this.props.graficaTres.titulo}
+                    <div className="card-header-actions">
+                        <small className="text-muted"> { this.props.graficaTres.subtitulo } </small>
+                    </div>
+                    </CardHeader>
+                    <CardBody>
+                    <div className="chart-wrapper">
+                        <Pie data={graficaTres} />
+                    </div>
+                    </CardBody>
+                </Card>
 
-            <Card>
-                <CardHeader>
-                Pie Chart
-                <div className="card-header-actions">
-                    <a href="http://www.chartjs.org" className="card-header-action">
-                    <small className="text-muted">docs</small>
-                    </a>
-                </div>
-                </CardHeader>
-                <CardBody>
-                <div className="chart-wrapper">
-                    <Pie data={this.state.pie} />
-                </div>
-                </CardBody>
-            </Card>
+                <Card>
+                    <CardHeader>
+                        {this.props.graficaCuatro.titulo}
+                    <div className="card-header-actions">
+                        <small className="text-muted"> {this.props.graficaCuatro.subtitulo} </small>
+                    </div>
+                    </CardHeader>
+                    <CardBody>
+                    <div className="chart-wrapper">
+                        <Pie data={graficaCuatro}/>
+                    </div>
+                    </CardBody>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        {this.props.getGraficaCINCO.titulo}
+                    <div className="card-header-actions">
+                        
+                    </div>
+                    </CardHeader>
+                    <CardBody>
+                    <div className="chart-wrapper">
+                        <Bar data={graficaCinco} />
+                    </div>
+                    </CardBody>
+                </Card>
             </CardColumns>
         </div>
         
@@ -248,9 +325,20 @@ const mapStateToProps = state => {
 
     return {
         usuario: state.usuario.usuario,
-        graficaUno: state.graficas.graficaUno
+        graficaUno: state.graficas.graficaUno,
+        graficaDos: state.graficas.graficaDos,
+        graficaTres: state.graficas.graficaTres,
+        graficaCuatro: state.graficas.graficaCuatro,
+        graficaCinco: state.graficas.graficaCinco,
     };
 };
 
 //export default Dashboard;
-export default connect(mapStateToProps, {obtenerUsuario, getGraficaUNO, mostrarGraficaUNO})(Dashboard);
+export default connect(mapStateToProps, {
+    obtenerUsuario, 
+    getGraficaUNO, mostrarGraficaUNO,
+    getGraficaDOS, mostrarGraficaDOS,
+    getGraficaTRES, mostrarGraficaTRES,
+    getGraficaCUATRO, mostrarGraficaCUATRO,
+    getGraficaCINCO, mostrarGraficaCINCO
+})(Dashboard);

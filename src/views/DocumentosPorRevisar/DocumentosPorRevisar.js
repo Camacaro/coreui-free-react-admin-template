@@ -243,12 +243,12 @@ class DocumentosPorRevisar extends Component {
                             </CardHeader>
                             <CardBody>
                                 <BootstrapTable data={dataRow} striped hover  pagination >
-                                    <TableHeaderColumn isKey dataField='id_documento'   width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } }>Documento ID</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='documento'            width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Documento</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='nombre_emisor'        width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Emisor</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='FechaEmisionDoc'      width='300px' dataFormat={ this.dateFormatter } filter={ { type: 'DateFilter' } }  >Fecha Doc</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='MontoTotalImpuesto'   width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Monto Impuesto</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='TotalFactura'         width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Total Doc</TableHeaderColumn>
+                                    {/* <TableHeaderColumn isKey dataField='id_documento'   width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } }>Documento ID</TableHeaderColumn> */}
+                                    <TableHeaderColumn isKey dataField='documento'            width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Documento</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='nombre_emisor'        width='300px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Emisor</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='FechaEmisionDoc'      width='170px' dataFormat={ this.dateFormatter } filter={ { type: 'DateFilter' } }  >Fecha Doc</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='MontoTotalImpuesto'   width='140px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Monto Impuesto</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='TotalFactura'         width='140px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Total Doc</TableHeaderColumn>
                                     <TableHeaderColumn dataField='DetalleMensaje'       width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Detalle Mensaje</TableHeaderColumn>
                                     <TableHeaderColumn dataField='action'               width='160px' dataFormat={this.buttonGroup} >Acciones</TableHeaderColumn>
                                 </BootstrapTable>,

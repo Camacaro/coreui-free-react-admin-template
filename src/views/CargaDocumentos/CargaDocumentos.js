@@ -639,17 +639,17 @@ class CargaDocumentos extends Component {
                             </CardHeader>
                             <CardBody>
                                 <BootstrapTable data={dataRow} striped hover  pagination >
-                                    <TableHeaderColumn isKey dataField='id_documento'   width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } }>Documento ID</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='documento'            width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Documento</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='nombre_emisor'        width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Emisor</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='FechaEmisionDoc'      width='300px' dataFormat={ this.dateFormatter } filter={ { type: 'DateFilter' } }  >Fecha Doc</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='MontoTotalImpuesto'   width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Monto Impuesto</TableHeaderColumn>
+                                    {/* <TableHeaderColumn isKey dataField='id_documento'   width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } }>Documento ID</TableHeaderColumn> */}
+                                    <TableHeaderColumn isKey dataField='documento'      width='140px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Documento</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='nombre_emisor'        width='300px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Emisor</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='FechaEmisionDoc'      width='170px' dataFormat={ this.dateFormatter } filter={ { type: 'DateFilter' } }  >Fecha Doc</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='MontoTotalImpuesto'   width='140px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Monto Impuesto</TableHeaderColumn>
                                     <TableHeaderColumn dataField='consecutivo'          width='200px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Consecutivo</TableHeaderColumn>
                                     <TableHeaderColumn dataField='TotalFactura'         width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Total Doc</TableHeaderColumn>
                                     <TableHeaderColumn dataField='Estatus'              width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Estatus Hacienda</TableHeaderColumn>
                                     <TableHeaderColumn dataField='DetalleMensaje'       width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Detalle Mensaje</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Fecha_aceptacion'     width='300px' filter={ { type: 'DateFilter' } } dataFormat={ this.dateFormatter } >Fecha Aceptacion</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='id_empresa'           width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Id Empresa</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Fecha_aceptacion'     width='170px' filter={ { type: 'DateFilter' } } dataFormat={ this.dateFormatter } >Fecha Aceptacion</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='id_empresa'           width='120px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Id Empresa</TableHeaderColumn>
                                     <TableHeaderColumn dataField='Empresa'              width='160px' filter={ { type: 'RegexFilter', placeholder: 'Buscar...' } } >Empresa</TableHeaderColumn>
                                     <TableHeaderColumn dataField='action'               width='160px' dataFormat={this.buttonGroup} >Acciones</TableHeaderColumn>
                                 </BootstrapTable>,

@@ -24,6 +24,10 @@ export const AUTHORIZATION = (token) => {
  * documentoshacienda/archivar/{db}/{id}
  * documentoshacienda/reportes/{db}
  * documentoshacienda/grafica/uno/{db}
+ * documentoshacienda/grafica/dos/{db}
+ * documentoshacienda/grafica/tres/{db}
+ * documentoshacienda/grafica/cuatro/{db}
+ * documentoshacienda/grafica/cuatro/{db}
  */
 const environment  = {
     URL,
@@ -48,6 +52,10 @@ const environment  = {
     REPORTES: `${URL}/documentoshacienda/reportes`,
 
     GRAFICA_UNO: `${URL}/documentoshacienda/grafica/uno`,
+    GRAFICA_DOS: `${URL}/documentoshacienda/grafica/dos`,
+    GRAFICA_TRES: `${URL}/documentoshacienda/grafica/tres`,
+    GRAFICA_CUATRO: `${URL}/documentoshacienda/grafica/cuatro`,
+    GRAFICA_CINCO: `${URL}/documentoshacienda/grafica/cinco`,
 };
 
 export default environment ;
